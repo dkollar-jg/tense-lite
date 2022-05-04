@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS user (
     id                      int             NOT NULL auto_increment,
     username                varchar(50)     NOT NULL,
     password                varchar(60)     NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
     CONSTRAINT pkey_users_id PRIMARY KEY (id)
 );
 
-INSERT IGNORE INTO users (id, username, password, first_name, last_name, email, is_admin) VALUES
+INSERT IGNORE INTO user (id, username, password, first_name, last_name, email, is_admin) VALUES
     (1, "dkollar", "pass", "Dan", "Kollar", "dkollar@jahnelgroup.com", 1),
     (2, "jlucier", "pass", "Jesse", "Lucier", "jlucier@jahnelgroup.com", 1),
     (3, "mshirk", "pass", "Michael", "Shirk", "mshirk@jahnelgroup.com", 0);
