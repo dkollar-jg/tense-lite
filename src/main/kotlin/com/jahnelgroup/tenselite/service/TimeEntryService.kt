@@ -2,8 +2,8 @@ package com.jahnelgroup.tenselite.service
 
 import com.jahnelgroup.tenselite.dtos.UpdateTimeEntryDto
 import com.jahnelgroup.tenselite.exceptions.NotFoundException
+import com.jahnelgroup.tenselite.models.ProjectUserId
 import com.jahnelgroup.tenselite.models.TimeEntry
-import com.jahnelgroup.tenselite.repository.ProjectRepository
 import com.jahnelgroup.tenselite.repository.TimeEntryRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -20,6 +20,7 @@ interface TimeEntryService {
 
 @Service
 class TimeEntryServiceImpl(
+    val projectUserService: ProjectUserService,
     val timeEntryRepository: TimeEntryRepository
 ): TimeEntryService {
     override fun findAll(): List<TimeEntry> {
@@ -39,7 +40,9 @@ class TimeEntryServiceImpl(
     }
 
     override fun create(timeEntry: TimeEntry): TimeEntry {
-        timeEntry.entryDollarValue = timeEntry.hours?.let { timeEntry.hourlyRate?.times(it) }
+        val projectUser = projectUserService.findById(ProjectUserId(timeEntry.projectId, timeEntry.userId))
+        timeEntry.hourlyRate = projectUser.hourlyRate
+        timeEntry.entryDollarValue = timeEntry.hourlyRate?.let { timeEntry.hours?.times(it) }
         return timeEntryRepository.save(timeEntry)
     }
 
@@ -50,7 +53,6 @@ class TimeEntryServiceImpl(
         timeEntry.entryDate?.also { originalTimeEntry.entryDate = it }
         timeEntry.entryNotes?.also { originalTimeEntry.entryNotes = it }
         timeEntry.hours?.also { originalTimeEntry.hours = it }
-        timeEntry.hourlyRate?.also { originalTimeEntry.hourlyRate = it }
         originalTimeEntry.entryDollarValue = originalTimeEntry.hourlyRate?.let { originalTimeEntry.hours?.times(it) }
 
         return timeEntryRepository.save(originalTimeEntry)

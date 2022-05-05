@@ -18,6 +18,15 @@ CREATE TABLE IF NOT EXISTS project (
      CONSTRAINT pkey_project_id PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS project_x_user (
+    project_id       INT        NOT NULL,
+    user_id          INT        NOT NULL,
+    hourly_rate      DOUBLE     NULL,
+    start_date       DATE       NULL,
+    end_date         DATE       NULL,
+    enabled          TINYINT(1) NOT NULL DEFAULT 1
+);
+
 CREATE TABLE IF NOT EXISTS time_entry (
         id                        INT             NOT NULL AUTO_INCREMENT,
         user_id                   INT             NULL,
@@ -41,6 +50,14 @@ INSERT IGNORE INTO project (id, name, is_billable, start_date, end_date) VALUES
     (1, "Jahnel Group", 0, "2014-01-01", "2030-12-31"),
     (2, "Kelmar", 1, "2014-01-01", "2030-12-31"),
     (3, "Levy Gorvy", 1, "2014-01-01", "2030-12-31");
+
+INSERT IGNORE INTO project_x_user (project_id, user_id, hourly_rate, start_date, end_date) VALUES
+    (1, 1, 0, "2014-05-27", NULL),
+    (1, 2, 0, "2015-02-25", NULL),
+    (1, 3, 0, "2015-02-05", NULL),
+    (2, 2, 125, "2015-02-05", "2021-03-04"),
+    (2, 3, 100, "2015-02-05", "2020-08-11"),
+    (3, 3, 100, "2020-08-12", NULL);
 
 INSERT IGNORE INTO time_entry (id, user_id, project_id, entry_date, entry_notes, hours, hourly_rate, entry_dollar_value) VALUES
     (1, 1, 1, "2022-05-02", "Working on stuff", 8, 0, 0),

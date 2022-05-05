@@ -3,6 +3,7 @@ package com.jahnelgroup.tenselite.controller
 import com.jahnelgroup.tenselite.dtos.UpdateProjectDto
 import com.jahnelgroup.tenselite.models.Project
 import com.jahnelgroup.tenselite.service.ProjectService
+import com.jahnelgroup.tenselite.service.ProjectUserService
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -12,7 +13,8 @@ import javax.validation.Valid
 @RequestMapping("/projects")
 @Validated
 class ProjectController(
-    val projectService: ProjectService
+    val projectService: ProjectService,
+    val projectUserService: ProjectUserService
 ) {
 
     @GetMapping
@@ -43,7 +45,9 @@ class ProjectController(
     }
 
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable(value = "id") id: Long): ResponseEntity<Boolean> {
+    fun delete(
+        @PathVariable(value = "id") id: Long
+    ): ResponseEntity<Boolean> {
         projectService.delete(id)
         return ResponseEntity.ok().build()
     }
