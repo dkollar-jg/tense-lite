@@ -43,7 +43,9 @@ class UserController(
     }
 
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable(value = "id") id: Long): ResponseEntity<Boolean> {
+    fun delete(
+        @PathVariable(value = "id") id: Long
+    ): ResponseEntity<Boolean> {
         userService.delete(id)
         return ResponseEntity.ok().build()
     }

@@ -1,6 +1,6 @@
 package com.jahnelgroup.tenselite.controller
 
-import com.jahnelgroup.tenselite.exceptions.UserNotFoundException
+import com.jahnelgroup.tenselite.exceptions.NotFoundException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -22,9 +22,9 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
         return ResponseEntity<Any>(ErrorMessage(error = "Invalid request body.", details = fieldErrors), HttpStatus.BAD_REQUEST)
     }
 
-    @ExceptionHandler(UserNotFoundException::class)
-    fun handleUserNotFoundException(e: UserNotFoundException): ResponseEntity<Any> {
-        return ResponseEntity<Any>(ErrorMessage(error = "User not found.", details = listOf(e.message)), HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NotFoundException::class)
+    fun handleUserNotFoundException(e: NotFoundException): ResponseEntity<Any> {
+        return ResponseEntity<Any>(ErrorMessage(error = "Invalid request.", details = listOf(e.message)), HttpStatus.BAD_REQUEST)
     }
 }
 

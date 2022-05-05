@@ -1,7 +1,7 @@
 package com.jahnelgroup.tenselite.service
 
 import com.jahnelgroup.tenselite.dtos.UpdateUserDto
-import com.jahnelgroup.tenselite.exceptions.UserNotFoundException
+import com.jahnelgroup.tenselite.exceptions.NotFoundException
 import com.jahnelgroup.tenselite.models.User
 import com.jahnelgroup.tenselite.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -24,7 +24,7 @@ class UserServiceImpl(
     }
 
     override fun findById(id: Long): User {
-        return userRepository.findByIdOrNull(id) ?: throw UserNotFoundException("User with id $id does not exist.")
+        return userRepository.findByIdOrNull(id) ?: throw NotFoundException("User with id $id does not exist.")
     }
 
     override fun create(user: User): User {
@@ -32,7 +32,7 @@ class UserServiceImpl(
     }
 
     override fun update(user: UpdateUserDto, id: Long): User {
-        val originalUser = userRepository.findByIdOrNull(id) ?: throw UserNotFoundException("User with id $id does not exist.")
+        val originalUser = userRepository.findByIdOrNull(id) ?: throw NotFoundException("User with id $id does not exist.")
 
         user.username?.also { originalUser.username = it }
         user.firstName?.also { originalUser.firstName = it }
@@ -44,7 +44,7 @@ class UserServiceImpl(
     }
 
     override fun delete(id: Long) {
-        userRepository.findByIdOrNull(id) ?: throw UserNotFoundException("User with id $id does not exist.")
+        userRepository.findByIdOrNull(id) ?: throw NotFoundException("User with id $id does not exist.")
         userRepository.deleteById(id)
     }
 }
