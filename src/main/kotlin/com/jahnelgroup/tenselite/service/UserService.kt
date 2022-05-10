@@ -12,7 +12,7 @@ import org.springframework.web.client.HttpClientErrorException
 interface UserService {
     fun findAll(): List<User>
     fun findById(id: Long): User
-    fun findByEmail(email: String): List<User>
+//    fun findByEmail(email: String): List<User>
     fun create(user: User): User
     fun update(user: UpdateUserDto, id: Long): User
     fun delete(id: Long)
@@ -30,11 +30,11 @@ class UserServiceImpl(
         return userRepository.findByIdOrNull(id) ?: throw NotFoundException("User with id $id does not exist.")
     }
 
-    override fun findByEmail(email: String): List<User> {
-        val users = userRepository.findByEmail(email)
-        if (users.size > 1) throw RuntimeException("Duplicate user email.")
-        return users
-    }
+//    override fun findByEmail(email: String): List<User> {
+//        val users = userRepository.findByEmail(email)
+//        if (users.size > 1) throw RuntimeException("Duplicate user email.")
+//        return users
+//    }
 
     override fun create(user: User): User {
         return userRepository.save(user)

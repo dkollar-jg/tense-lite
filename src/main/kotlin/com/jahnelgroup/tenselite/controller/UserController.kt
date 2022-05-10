@@ -5,11 +5,6 @@ import com.jahnelgroup.tenselite.dtos.UpdateUserDto
 import com.jahnelgroup.tenselite.models.User
 import com.jahnelgroup.tenselite.service.UserService
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
@@ -26,14 +21,13 @@ class UserController(
         return userService.findAll()
     }
 
-    @GetMapping("/{id}")
-    fun findById(
-        @AuthenticationPrincipal jwt: Jwt,
-        @PathVariable(value = "id") id: Long
-    ): User {
-        val claims = jwt.getClaimAsString("email")
-        return userService.findById(id)
-    }
+//    @GetMapping("/{id}")
+//    fun findById(
+//        @AuthenticationPrincipal jwt: Jwt,
+//        @PathVariable(value = "id") id: Long
+//    ): User {
+//        return userService.findById(id)
+//    }
 
     @PostMapping
     fun create(
