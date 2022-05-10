@@ -1,31 +1,23 @@
-package com.jahnelgroup.tenselite.models
+package com.jahnelgroup.tenselite.dtos
 
-import javax.persistence.*
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
-@Entity
-@Table(name = "user")
-class User(
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long?,
-
+class CreateUserDto (
+    @field:NotNull(message = "'firstName' is required")
     @field:Size(min = 2, max = 120, message = "'firstName' must be between 2 and 120 characters.")
-    @Column
     var firstName: String?,
 
+    @field:NotNull(message = "'lastName' is required")
     @field:Size(min = 2, max = 120, message = "'lastName' must be between 2 and 120 characters.")
-    @Column
     var lastName: String?,
 
     @field:NotBlank(message = "'email' is required")
     @field:Size(min = 2, max = 255, message = "'email' must be between 2 and 255 characters.")
     @field:Email(message = "'email' is invalid")
-    @Column
     var email: String?,
 
-    @Column
     var isAdmin: Boolean? = false
 )

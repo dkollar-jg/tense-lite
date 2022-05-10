@@ -1,5 +1,6 @@
 package com.jahnelgroup.tenselite.controller
 
+import com.jahnelgroup.tenselite.dtos.CreateUserDto
 import com.jahnelgroup.tenselite.dtos.UpdateUserDto
 import com.jahnelgroup.tenselite.models.User
 import com.jahnelgroup.tenselite.service.UserService
@@ -20,17 +21,25 @@ class UserController(
         return userService.findAll()
     }
 
-    @GetMapping("/{id}")
-    fun findById(
-        @PathVariable(value = "id") id: Long
-    ): User {
-        return userService.findById(id)
-    }
+//    @GetMapping("/{id}")
+//    fun findById(
+//        @AuthenticationPrincipal jwt: Jwt,
+//        @PathVariable(value = "id") id: Long
+//    ): User {
+//        return userService.findById(id)
+//    }
 
     @PostMapping
     fun create(
-        @Valid @RequestBody user: User
+        @Valid @RequestBody createUserDto: CreateUserDto
     ): User {
+        val user = User(
+            null,
+            createUserDto.firstName,
+            createUserDto.lastName,
+            createUserDto.email,
+            createUserDto.isAdmin
+        )
         return userService.create(user)
     }
 
