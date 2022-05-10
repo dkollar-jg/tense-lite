@@ -12,4 +12,10 @@ export class AuthButtonComponent {
     @Inject(DOCUMENT) public document: Document,
     public auth: AuthService
   ) {}
+
+  login() {
+    this.auth.loginWithRedirect({
+      appState: { target: '/callback' },
+    });
+  }
 }

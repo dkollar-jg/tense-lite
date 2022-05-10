@@ -25,19 +25,19 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
-        http.csrf().disable().authorizeRequests().antMatchers("/*").permitAll()
+//        http.csrf().disable().authorizeRequests().antMatchers("/*").permitAll().and().cors().configurationSource(corsConfigurationSource())
         // TODO: replace with above when frontend auth ready
-//        http
-//            .authorizeRequests()
-//            .anyRequest()
-//            .authenticated()
-//            .and()
-//            .cors()
-//            .configurationSource(corsConfigurationSource())
-//            .and()
-//            .oauth2ResourceServer()
-//            .jwt()
-//            .decoder(jwtDecoder())
+        http
+            .authorizeRequests()
+            .anyRequest()
+            .authenticated()
+            .and()
+            .cors()
+            .configurationSource(corsConfigurationSource())
+            .and()
+            .oauth2ResourceServer()
+            .jwt()
+            .decoder(jwtDecoder())
     }
 
     fun corsConfigurationSource(): CorsConfigurationSource? {
