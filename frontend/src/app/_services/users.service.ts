@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { User } from '../_models/user.model';
 
@@ -36,16 +36,16 @@ export class UsersService {
     this.usersChanged.next(this.users.slice());
   }
 
-  fetchUser(id: number) {
-    this.http
+  fetchUser(id: number): Observable<User> {
+    return this.http
       .get<User>(`${this.baseUrl}/users/${id}`)
-      .subscribe((user) => this.setUser(user));
+      .pipe(tap((user) => this.setUser(user)));
   }
 
-  fetchUsers(): void {
-    this.http.get<User[]>(`${this.baseUrl}/users`).subscribe((users) => {
-      this.setUsers(users);
-    });
+  fetchUsers(): Observable<User[]> {
+    return this.http
+      .get<User[]>(`${this.baseUrl}/users`)
+      .pipe(tap((users) => this.setUsers(users)));
   }
 
   updateUser(updateUser: User) {
@@ -53,20 +53,21 @@ export class UsersService {
       .post<User>(`${this.baseUrl}/users`, updateUser)
       .subscribe((user) => {
         this.setUser(user);
-        const index = this.users.findIndex(u => u.id === user.id);
+        const index = this.users.findIndex((u) => u.id === user.id);
         this.users[index] = user;
         this.usersChanged.next(this.users.slice());
       });
   }
 
   deleteUser(id: number) {
-    this.http.delete<Boolean>(`${this.baseUrl}/users`)
-    .subscribe(isDeleted => {
-      if (isDeleted) {
-        const index = this.users.findIndex(u => u.id === id);
-        this.users.splice(index, 1);
-        this.usersChanged.next(this.users.slice());
-      }
-    })
+    this.http
+      .delete<Boolean>(`${this.baseUrl}/users`)
+      .subscribe((isDeleted) => {
+        if (isDeleted) {
+          const index = this.users.findIndex((u) => u.id === id);
+          this.users.splice(index, 1);
+          this.usersChanged.next(this.users.slice());
+        }
+      });
   }
 }

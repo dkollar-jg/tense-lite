@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../_services/users.service';
 
 @Component({
   selector: 'app-callback',
   templateUrl: './callback.component.html',
-  styleUrls: ['./callback.component.scss']
+  styleUrls: ['./callback.component.scss'],
 })
 export class CallbackComponent implements OnInit {
-
   constructor(public auth: AuthService, private usersService: UsersService) {}
 
   ngOnInit(): void {
@@ -19,5 +18,4 @@ export class CallbackComponent implements OnInit {
     //   });
     // });
   }
-
 }

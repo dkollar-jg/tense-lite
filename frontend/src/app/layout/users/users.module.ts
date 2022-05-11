@@ -1,0 +1,22 @@
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { UserListResolver } from '../../_resolvers/user-list.resolver';
+import { UserResolver } from '../../_resolvers/user.resolver';
+import { UserListComponent } from './user-list/user-list.component';
+import { UserModalComponent } from './user-modal/user-modal.component';
+import { UserComponent } from './user/user.component';
+import { UsersRoutingModule } from './users-routing.module';
+import { UsersComponent } from './users.component';
+
+@NgModule({
+  declarations: [
+    UserComponent,
+    UsersComponent,
+    UserListComponent,
+    UserModalComponent,
+  ],
+  imports: [CommonModule, UsersRoutingModule],
+  exports: [UserListComponent],
+  providers: [UserResolver, UserListResolver],
+})
+export class UsersModule {}

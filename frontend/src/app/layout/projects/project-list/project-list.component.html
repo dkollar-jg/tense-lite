@@ -1,0 +1,35 @@
+<section class="border">
+  <p>project-list component</p>
+
+  <button class="btn btn-primary" (click)="openProjectModal()">+ New Project</button>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Billable</th>
+        <th scope="col">Start Date</th>
+        <th scope="col">End Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let project of projects; index as i"
+        [routerLink]="['/projects', project.id]"
+        class="clickable"
+      >
+        <th scope="row">{{ project.id }}</th>
+        <td>{{ project.name }}</td>
+        <td>
+          <i
+            *ngIf="project.isBillable"
+            class="bi bi-lightning-charge-fill text-primary"
+          ></i>
+        </td>
+        <td>{{ project.startDate | date }}</td>
+        <td>{{ project.endDate | date }}</td>
+      </tr>
+    </tbody>
+  </table>
+</section>

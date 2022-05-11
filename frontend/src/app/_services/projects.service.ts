@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Project } from '../_models/project.model';
 
@@ -36,12 +36,18 @@ export class ProjectsService {
     this.projectsChanged.next(this.projects.slice());
   }
 
-  fetchProjects(): void {
-    this.http
-      .get<Project[]>(`${this.baseUrl}/projects`)
-      .subscribe((projects) => {
+  fetchProject(id: number): Observable<Project> {
+    return this.http
+      .get<Project>(`${this.baseUrl}/projects/${id}`)
+      .pipe(tap((project) => this.setProject(project)));
+  }
+
+  fetchProjects(): Observable<Project[]> {
+    return this.http.get<Project[]>(`${this.baseUrl}/projects`).pipe(
+      tap((projects) => {
         this.setProjects(projects);
-      });
+      })
+    );
   }
 
   updateProject(updateProject: Project) {
