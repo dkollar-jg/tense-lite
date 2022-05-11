@@ -29,6 +29,13 @@ class UserController(
 //        return userService.findById(id)
 //    }
 
+    @GetMapping("/{id}")
+    fun findById(
+        @PathVariable(value = "id") id: Long
+    ): User {
+        return userService.findById(id)
+    }
+
     @PostMapping
     fun create(
         @Valid @RequestBody createUserDto: CreateUserDto
