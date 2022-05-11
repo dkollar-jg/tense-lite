@@ -1,0 +1,25 @@
+<section class="border">
+  user-modal component
+  <div class="modal-header">
+    <h4 class="modal-title">Modal Title</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    Modal Body
+    <p>{{ testInput }}</p>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="activeModal.close('Close click')"
+    >
+      Close
+    </button>
+  </div>
+</section>
