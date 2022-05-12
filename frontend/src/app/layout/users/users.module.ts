@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { UserListResolver } from '../../_resolvers/user-list.resolver';
 import { UserResolver } from '../../_resolvers/user.resolver';
 import { UserListComponent } from './user-list/user-list.component';
@@ -15,8 +17,13 @@ import { UsersComponent } from './users.component';
     UserListComponent,
     UserModalComponent,
   ],
-  imports: [CommonModule, UsersRoutingModule],
-  exports: [UserListComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ModalModule.forRoot(),
+    ReactiveFormsModule,
+    UsersRoutingModule,
+  ],
   providers: [UserResolver, UserListResolver],
 })
 export class UsersModule {}

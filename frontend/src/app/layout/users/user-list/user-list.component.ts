@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { User } from '../../../_models/user.model';
 import { UsersService } from '../../../_services/users.service';
@@ -12,11 +12,12 @@ import { UserModalComponent } from '../user-modal/user-modal.component';
   styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent implements OnInit {
+  bsModalRef: BsModalRef;
   subscription: Subscription;
   users: User[];
 
   constructor(
-    private modalService: NgbModal,
+    private modalService: BsModalService,
     private route: ActivatedRoute,
     private usersService: UsersService
   ) {}
@@ -34,7 +35,21 @@ export class UserListComponent implements OnInit {
   }
 
   openUserModal() {
-    const modalRef = this.modalService.open(UserModalComponent);
-    modalRef.componentInstance.testInput = 'Test Property';
+    const newUser = {
+      id: null,
+      firstName: '',
+      lastName: '',
+      email: '',
+      isAdmin: false,
+    };
+    const initialState: ModalOptions = {
+      initialState: {
+        user: newUser,
+      },
+    };
+    this.bsModalRef = this.modalService.show(UserModalComponent, initialState);
+    this.bsModalRef.content.userEvent.subscribe((user: User) => {
+      this.usersService.createUser(user);
+    });
   }
 }

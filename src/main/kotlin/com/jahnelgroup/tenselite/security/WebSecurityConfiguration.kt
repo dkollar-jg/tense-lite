@@ -44,6 +44,7 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
         val configuration = CorsConfiguration()
         configuration.allowedMethods = listOf(
             HttpMethod.GET.name,
+            HttpMethod.PATCH.name,
             HttpMethod.PUT.name,
             HttpMethod.POST.name,
             HttpMethod.DELETE.name

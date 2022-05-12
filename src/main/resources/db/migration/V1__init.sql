@@ -1,6 +1,5 @@
 CREATE TABLE IF NOT EXISTS user (
     id                      int             NOT NULL auto_increment,
-    username                varchar(50)     NOT NULL,
     first_name              varchar(120)    NOT NULL,
     last_name               varchar(120)    NOT NULL,
     email                   varchar(255)    NOT NULL,
@@ -40,10 +39,10 @@ CREATE TABLE IF NOT EXISTS time_entry (
         CONSTRAINT fkey_time_entry_project_id FOREIGN KEY (project_id) REFERENCES project(id)
 );
 
-INSERT IGNORE INTO user (id, username, first_name, last_name, email, is_admin) VALUES
-    (1, "dkollar", "Dan", "Kollar", "dkollar@jahnelgroup.com", 1),
-    (2, "jlucier", "Jesse", "Lucier", "jlucier@jahnelgroup.com", 1),
-    (3, "mshirk", "Michael", "Shirk", "mshirk@jahnelgroup.com", 0);
+INSERT IGNORE INTO user (id, first_name, last_name, email, is_admin) VALUES
+    (1, "Dan", "Kollar", "dkollar@jahnelgroup.com", 1),
+    (2, "Jesse", "Lucier", "jlucier@jahnelgroup.com", 1),
+    (3, "Michael", "Shirk", "mshirk@jahnelgroup.com", 0);
 
 INSERT IGNORE INTO project (id, name, is_billable, start_date, end_date) VALUES
     (1, "Jahnel Group", 0, "2014-01-01", "2030-12-31"),

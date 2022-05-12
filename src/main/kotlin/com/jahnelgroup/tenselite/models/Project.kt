@@ -10,7 +10,7 @@ import javax.validation.constraints.Size
 @Table(name = "project")
 class Project (
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
 
     @field:NotBlank(message = "'name' is required")

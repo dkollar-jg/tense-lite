@@ -1,25 +1,82 @@
 <section class="border">
   project-modal component
   <div class="modal-header">
-    <h4 class="modal-title">Modal Title</h4>
+    <h4 class="modal-title">Add Project</h4>
     <button
       type="button"
       class="btn-close"
       aria-label="Close"
-      (click)="activeModal.dismiss('Cross click')"
+      (click)="bsModalRef.hide()"
     ></button>
   </div>
   <div class="modal-body">
-    Modal Body
-    <p>{{ testInput }}</p>
+    <form
+      [formGroup]="projectForm"
+      (ngSubmit)="submitHandler()"
+      id="projectForm"
+    >
+      <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          formControlName="name"
+          [ngClass]="{
+            'is-invalid': submitted && projectForm.get('name')?.errors
+          }"
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="submitted && projectForm.get('name')?.hasError('required')"
+        >
+          Required
+        </div>
+      </div>
+      <div class="mb-3 form-check">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          id="isBillable"
+          formControlName="isBillable"
+        />
+        <label class="form-check-label" for="isBillable">Billable</label>
+      </div>
+      <div class="mb-3">
+        <label class="form-check-label" for="startDate">Start Date</label>
+        <input
+          class="form-control"
+          id="startDate"
+          formControlName="startDate"
+          bsDatepicker
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-check-label" for="endDate">End Date</label>
+        <input
+          class="form-control"
+          id="endDate"
+          formControlName="endDate"
+          bsDatepicker
+        />
+      </div>
+    </form>
   </div>
   <div class="modal-footer">
     <button
       type="button"
-      class="btn btn-outline-dark"
-      (click)="activeModal.close('Close click')"
+      class="btn btn-secondary-light"
+      (click)="bsModalRef.hide()"
     >
       Close
+    </button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      form="projectForm"
+      [disabled]="submitted && !projectForm.valid"
+    >
+      Save
     </button>
   </div>
 </section>

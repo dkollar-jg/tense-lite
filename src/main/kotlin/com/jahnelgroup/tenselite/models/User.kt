@@ -9,7 +9,7 @@ import javax.validation.constraints.Size
 @Table(name = "user")
 class User(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
 
     @field:Size(min = 2, max = 120, message = "'firstName' must be between 2 and 120 characters.")
