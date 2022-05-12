@@ -1,4 +1,11 @@
 <section class="border">
   <p>user component</p>
-  {{ user.firstName }} {{ user.lastName }}
+
+  <button class="btn btn-primary" (click)="openUserModal()">Edit User</button>
+
+  <div>{{ user.firstName }} {{ user.lastName }}</div>
+  <div>
+    {{ user.email }}
+  </div>
+  <div>Role: {{ user.isAdmin ? "Admin" : "Basic" }}</div>
 </section>

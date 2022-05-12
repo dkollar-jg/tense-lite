@@ -48,9 +48,18 @@ export class UsersService {
       .pipe(tap((users) => this.setUsers(users)));
   }
 
+  createUser(createUser: User) {
+    this.http
+      .post<User>(`${this.baseUrl}/users`, createUser)
+      .subscribe((user) => {
+        this.users.push(user);
+        this.usersChanged.next(this.users.slice());
+      });
+  }
+
   updateUser(updateUser: User) {
     this.http
-      .post<User>(`${this.baseUrl}/users`, updateUser)
+      .patch<User>(`${this.baseUrl}/users/${updateUser.id}`, updateUser)
       .subscribe((user) => {
         this.setUser(user);
         const index = this.users.findIndex((u) => u.id === user.id);

@@ -1,4 +1,14 @@
 <section class="border">
   <p>project component</p>
-  {{ project.name }}
+
+  <button class="btn btn-primary" (click)="openProjectModal()">
+    Edit Project
+  </button>
+
+  <div>
+    {{ project.name }}
+  </div>
+  <div>Billable: {{ project.isBillable ? "Yes" : "No" }}</div>
+  <div>Start Date: {{ project.startDate | date }}</div>
+  <div>End Date: {{ project.endDate | date }}</div>
 </section>

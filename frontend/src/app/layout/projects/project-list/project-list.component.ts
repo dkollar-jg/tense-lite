@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { Project } from '../../../_models/project.model';
 import { ProjectsService } from '../../../_services/projects.service';
@@ -12,11 +12,12 @@ import { ProjectModalComponent } from '../project-modal/project-modal.component'
   styleUrls: ['./project-list.component.scss'],
 })
 export class ProjectListComponent implements OnInit {
+  bsModalRef: BsModalRef;
   projects: Project[];
   subscription: Subscription;
 
   constructor(
-    private modalService: NgbModal,
+    private modalService: BsModalService,
     private route: ActivatedRoute,
     private projectsService: ProjectsService
   ) {}
@@ -34,7 +35,24 @@ export class ProjectListComponent implements OnInit {
   }
 
   openProjectModal() {
-    const modalRef = this.modalService.open(ProjectModalComponent);
-    modalRef.componentInstance.testInput = 'Test Property';
+    const newProject = {
+      id: null,
+      name: '',
+      isBillable: false,
+      startDate: null,
+      endDate: null,
+    };
+    const initialState: ModalOptions = {
+      initialState: {
+        project: newProject,
+      },
+    };
+    this.bsModalRef = this.modalService.show(
+      ProjectModalComponent,
+      initialState
+    );
+    this.bsModalRef.content.projectEvent.subscribe((project: Project) => {
+      this.projectsService.createProject(project);
+    });
   }
 }

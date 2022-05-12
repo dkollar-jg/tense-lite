@@ -1,25 +1,102 @@
 <section class="border">
   user-modal component
   <div class="modal-header">
-    <h4 class="modal-title">Modal Title</h4>
+    <h4 class="modal-title">Add User</h4>
     <button
       type="button"
       class="btn-close"
       aria-label="Close"
-      (click)="activeModal.dismiss('Cross click')"
+      (click)="bsModalRef.hide()"
     ></button>
   </div>
   <div class="modal-body">
-    Modal Body
-    <p>{{ testInput }}</p>
+    <form [formGroup]="userForm" (ngSubmit)="submitHandler()" id="userForm">
+      <div class="mb-3">
+        <label for="firstName" class="form-label">First Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="firstName"
+          formControlName="firstName"
+          [ngClass]="{
+            'is-invalid': submitted && userForm.get('firstName')?.errors
+          }"
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="submitted && userForm.get('firstName')?.hasError('required')"
+        >
+          Required
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="lastName" class="form-label">Last Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="lastName"
+          formControlName="lastName"
+          [ngClass]="{
+            'is-invalid': submitted && userForm.get('lastName')?.errors
+          }"
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="submitted && userForm.get('lastName')?.hasError('required')"
+        >
+          Required
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          formControlName="email"
+          [ngClass]="{
+            'is-invalid': submitted && userForm.get('email')?.errors
+          }"
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="submitted && userForm.get('email')?.hasError('required')"
+        >
+          Required
+        </div>
+        <div
+          class="invalid-feedback"
+          *ngIf="submitted && userForm.get('email')?.hasError('email')"
+        >
+          Invalid email address
+        </div>
+      </div>
+      <div class="mb-3 form-check">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          id="isAdmin"
+          formControlName="isAdmin"
+        />
+        <label class="form-check-label" for="isAdmin">Admin</label>
+      </div>
+    </form>
   </div>
   <div class="modal-footer">
     <button
       type="button"
-      class="btn btn-outline-dark"
-      (click)="activeModal.close('Close click')"
+      class="btn btn-secondary-light"
+      (click)="bsModalRef.hide()"
     >
       Close
+    </button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      form="userForm"
+      [disabled]="submitted && !userForm.valid"
+    >
+      Save
     </button>
   </div>
 </section>

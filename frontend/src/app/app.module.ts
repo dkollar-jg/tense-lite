@@ -1,7 +1,8 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthButtonComponent } from './auth-button/auth-button.component';
@@ -23,9 +24,11 @@ import { UsersModule } from './layout/users/users.module';
     //     ]
     //   }
     // }),
+    // FormsModule,
     HttpClientModule,
+    // ReactiveFormsModule,
     UsersModule,
-    NgbModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     // { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },

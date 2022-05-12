@@ -50,6 +50,15 @@ export class ProjectsService {
     );
   }
 
+  createProject(createProject: Project) {
+    this.http
+      .post<Project>(`${this.baseUrl}/projects`, createProject)
+      .subscribe((project) => {
+        this.projects.push(project);
+        this.projectsChanged.next(this.projects.slice());
+      });
+  }
+
   updateProject(updateProject: Project) {
     this.http
       .post<Project>(`${this.baseUrl}/projects`, updateProject)
