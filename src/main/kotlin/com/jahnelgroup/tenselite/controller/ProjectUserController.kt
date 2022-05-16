@@ -36,6 +36,8 @@ class ProjectUserController(
 
     @PostMapping("/projects/{projectId}/users/{userId}")
     fun createProjectUser(
+        @PathVariable(value = "projectId") projectId: Long,
+        @PathVariable(value = "userId") userId: Long,
         @Valid @RequestBody projectUser: CreateProjectUserDto
     ): ProjectUser {
         return projectUserService.create(projectUser)

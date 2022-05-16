@@ -1,0 +1,55 @@
+<section class="border">
+  <p>project-list component</p>
+
+  <button class="btn btn-primary" (click)="openProjectUserCreateModal()">
+    + New Project User
+  </button>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">User</th>
+        <th scope="col">Hourly Rate</th>
+        <th scope="col">Start Date</th>
+        <th scope="col">End Date</th>
+        <th scope="col">Enabled</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let projectUser of projectUsers; index as i"
+        class="clickable"
+      >
+        <th scope="row">{{ projectUser.userId | userFullName }}</th>
+        <td>{{ projectUser.hourlyRate | currency }}</td>
+        <td>{{ projectUser.startDate | date }}</td>
+        <td>{{ projectUser.endDate | date }}</td>
+        <td>
+          <i
+            *ngIf="projectUser.enabled"
+            class="bi bi-lightning-charge-fill text-primary"
+          ></i>
+        </td>
+        <td>
+          <button (click)="openProjectUserEditModal(projectUser)">
+            <i class="bi bi-pencil-fill text-primary"></i>
+          </button>
+        </td>
+        <td *ngIf="projectUser.enabled; else enable">
+          <button (click)="removeProjectUser(projectUser)">
+            <i class="bi bi-dash-circle-fill text-primary"></i>
+          </button>
+        </td>
+        <ng-template #enable>
+          <td>
+            <button (click)="enableProjectUser(projectUser)">
+              <i class="bi bi-plus-circle-fill text-primary"></i>
+            </button>
+          </td>
+        </ng-template>
+      </tr>
+    </tbody>
+  </table>
+</section>

@@ -25,11 +25,15 @@ class ProjectUser (
     @JsonUnwrapped
     var projectUserId: ProjectUserId,
 
+    @Column
     var hourlyRate: Double?,
 
+    @Column
     var startDate: LocalDate?,
 
+    @Column
     var endDate: LocalDate?,
 
-    var enabled: Boolean?
+    @Column
+    var enabled: Boolean? = true,
 )

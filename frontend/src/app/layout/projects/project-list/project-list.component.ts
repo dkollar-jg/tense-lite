@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
@@ -11,7 +11,7 @@ import { ProjectModalComponent } from '../project-modal/project-modal.component'
   templateUrl: './project-list.component.html',
   styleUrls: ['./project-list.component.scss'],
 })
-export class ProjectListComponent implements OnInit {
+export class ProjectListComponent implements OnInit, OnDestroy {
   bsModalRef: BsModalRef;
   projects: Project[];
   subscription: Subscription;
@@ -54,5 +54,9 @@ export class ProjectListComponent implements OnInit {
     this.bsModalRef.content.projectEvent.subscribe((project: Project) => {
       this.projectsService.createProject(project);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
