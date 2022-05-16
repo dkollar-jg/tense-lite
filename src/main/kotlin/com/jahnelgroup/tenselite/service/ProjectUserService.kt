@@ -40,7 +40,6 @@ class ProjectUserServiceImpl(
             createProjectUserDto.hourlyRate,
             createProjectUserDto.startDate,
             createProjectUserDto.endDate,
-            true
         )
         return projectUserRepository.save(projectUser)
     }

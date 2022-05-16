@@ -11,4 +11,11 @@
   <div>Billable: {{ project.isBillable ? "Yes" : "No" }}</div>
   <div>Start Date: {{ project.startDate | date }}</div>
   <div>End Date: {{ project.endDate | date }}</div>
+
+  <app-project-user-list
+    [project]="project"
+    [projects]="projects"
+    [projectUsers]="projectUsers"
+    [users]="users"
+  ></app-project-user-list>
 </section>

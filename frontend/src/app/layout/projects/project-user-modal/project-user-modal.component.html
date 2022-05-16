@@ -1,0 +1,119 @@
+<section class="border">
+  project-user-modal component
+  <div class="modal-header">
+    <h4 class="modal-title">Add Project User</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="bsModalRef.hide()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form
+      [formGroup]="projectUserForm"
+      (ngSubmit)="submitHandler()"
+      id="projectUserForm"
+    >
+      <div class="mb-3">
+        <label for="userId" class="form-label">Project</label>
+        <select
+          class="form-control"
+          id="projectId"
+          formControlName="projectId"
+          [ngClass]="{
+            'is-invalid': submitted && projectUserForm.get('projectId')?.errors
+          }"
+        >
+          <option *ngFor="let project of projects" value="{{ project.id }}">
+            {{ project.name}}
+          </option>
+        </select>
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            submitted && projectUserForm.get('projectId')?.hasError('required')
+          "
+        >
+          Required
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="userId" class="form-label">User</label>
+        <select
+          class="form-control"
+          id="userId"
+          formControlName="userId"
+          [ngClass]="{
+            'is-invalid': submitted && projectUserForm.get('userId')?.errors
+          }"
+        >
+          <option *ngFor="let user of users" value="{{ user.id }}" [disabled]="!(user | userAvailableToProject: projectUsers)">
+            {{ user.firstName }} {{ user.lastName }}
+          </option>
+        </select>
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            submitted && projectUserForm.get('userId')?.hasError('required')
+          "
+        >
+          Required
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="hourlyRate" class="form-label">Hourly Rate</label>
+        <input
+          type="number"
+          class="form-control"
+          id="hourlyRate"
+          formControlName="hourlyRate"
+          [ngClass]="{
+            'is-invalid': submitted && projectUserForm.get('hourlyRate')?.errors
+          }"
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="submitted && projectUserForm.get('hourlyRate')?.hasError('required')"
+        >
+          Required
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-check-label" for="startDate">Start Date</label>
+        <input
+          class="form-control"
+          id="startDate"
+          formControlName="startDate"
+          bsDatepicker
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-check-label" for="endDate">End Date</label>
+        <input
+          class="form-control"
+          id="endDate"
+          formControlName="endDate"
+          bsDatepicker
+        />
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary-light"
+      (click)="bsModalRef.hide()"
+    >
+      Close
+    </button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      form="projectUserForm"
+      [disabled]="submitted && !projectUserForm.valid"
+    >
+      Save
+    </button>
+  </div>
+</section>

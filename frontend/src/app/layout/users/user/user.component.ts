@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
@@ -11,7 +11,7 @@ import { UserModalComponent } from '../user-modal/user-modal.component';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit, OnDestroy {
   bsModalRef: BsModalRef;
   subscription: Subscription;
   user: User;
@@ -44,5 +44,9 @@ export class UserComponent implements OnInit {
     this.bsModalRef.content.userEvent.subscribe((user: User) => {
       this.usersService.updateUser(user);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

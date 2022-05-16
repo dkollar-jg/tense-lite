@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
@@ -11,7 +11,7 @@ import { UserModalComponent } from '../user-modal/user-modal.component';
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
 })
-export class UserListComponent implements OnInit {
+export class UserListComponent implements OnInit, OnDestroy {
   bsModalRef: BsModalRef;
   subscription: Subscription;
   users: User[];
@@ -51,5 +51,9 @@ export class UserListComponent implements OnInit {
     this.bsModalRef.content.userEvent.subscribe((user: User) => {
       this.usersService.createUser(user);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
