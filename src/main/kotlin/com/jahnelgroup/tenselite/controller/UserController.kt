@@ -31,7 +31,7 @@ class UserController(
 
     @GetMapping("/{id}")
     fun findById(
-        @PathVariable(value = "id") id: Long
+        @PathVariable(value = "id") id: Int
     ): User {
         return userService.findById(id)
     }
@@ -40,19 +40,16 @@ class UserController(
     fun create(
         @Valid @RequestBody createUserDto: CreateUserDto
     ): User {
-        val user = User(
-            null,
-            createUserDto.firstName,
-            createUserDto.lastName,
-            createUserDto.email,
-            createUserDto.isAdmin
-        )
+        val user = User()
+        user.firstName = createUserDto.firstName.toString()
+        user.lastName = createUserDto.lastName.toString()
+        user.email = createUserDto.email.toString()
         return userService.create(user)
     }
 
     @PatchMapping("/{id}")
     fun update(
-        @PathVariable(value = "id") id: Long,
+        @PathVariable(value = "id") id: Int,
         @Valid @RequestBody user: UpdateUserDto,
     ): User {
         return userService.update(user, id)
@@ -60,7 +57,7 @@ class UserController(
 
     @DeleteMapping("/{id}")
     fun delete(
-        @PathVariable(value = "id") id: Long
+        @PathVariable(value = "id") id: Int
     ): ResponseEntity<Boolean> {
         userService.delete(id)
         return ResponseEntity.ok().build()

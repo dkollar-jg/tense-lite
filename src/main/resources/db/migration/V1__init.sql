@@ -3,14 +3,15 @@ CREATE TABLE IF NOT EXISTS user (
     first_name              varchar(120)    NOT NULL,
     last_name               varchar(120)    NOT NULL,
     email                   varchar(255)    NOT NULL,
-    is_admin                TINYINT         NOT NULL DEFAULT 0,
-    CONSTRAINT pkey_users_id PRIMARY KEY (id)
+    password                varchar(60)     NOT NULL,
+    is_admin                INT             NOT NULL DEFAULT 0,
+    CONSTRAINT pkey_user_id PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS project (
      id                       INT             NOT NULL AUTO_INCREMENT,
      name                     VARCHAR(50)     NULL,
-     is_billable              TINYINT         NULL,
+     is_billable              INT             NULL,
      start_date               DATE            NULL,
      end_date                 DATE            NULL,
      CONSTRAINT pkey_project_id PRIMARY KEY (id)
@@ -22,7 +23,7 @@ CREATE TABLE IF NOT EXISTS project_x_user (
     hourly_rate      DOUBLE     NULL,
     start_date       DATE       NULL,
     end_date         DATE       NULL,
-    enabled          TINYINT(1) NOT NULL DEFAULT 1
+    enabled          INT        NOT NULL DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS time_entry (
@@ -39,10 +40,10 @@ CREATE TABLE IF NOT EXISTS time_entry (
         CONSTRAINT fkey_time_entry_project_id FOREIGN KEY (project_id) REFERENCES project(id)
 );
 
-INSERT IGNORE INTO user (id, first_name, last_name, email, is_admin) VALUES
-    (1, "Dan", "Kollar", "dkollar@jahnelgroup.com", 1),
-    (2, "Jesse", "Lucier", "jlucier@jahnelgroup.com", 1),
-    (3, "Michael", "Shirk", "mshirk@jahnelgroup.com", 0);
+INSERT IGNORE INTO user (id, first_name, last_name, email, password, is_admin) VALUES
+    (1, "Dan", "Kollar", "dkollar@jahnelgroup.com", "pass", 1),
+    (2, "Jesse", "Lucier", "jlucier@jahnelgroup.com", "pass", 1),
+    (3, "Michael", "Shirk", "mshirk@jahnelgroup.com", "pass", 0);
 
 INSERT IGNORE INTO project (id, name, is_billable, start_date, end_date) VALUES
     (1, "Jahnel Group", 0, "2014-01-01", "2030-12-31"),
