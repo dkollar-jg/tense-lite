@@ -15,11 +15,16 @@ import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletResponse
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("/api/auth")
 class AuthController(private val userService: UserService) {
 
     @PostMapping("register")
-    fun register(@RequestBody body: RegisterDTO): ResponseEntity<User> {
+    fun register(@RequestBody body: RegisterDTO): ResponseEntity<Any> {
+        val existingUser = userService.findByEmail(body.email)
+        if (existingUser != null) {
+            return ResponseEntity.badRequest().body(Message("user with email '${body.email}' already exists!"))
+        }
+
         val user = User()
         user.firstName = body.firstName
         user.lastName = body.lastName
@@ -29,7 +34,7 @@ class AuthController(private val userService: UserService) {
         return ResponseEntity.ok(this.userService.save(user))
     }
 
-    @PostMapping("login")
+    @PostMapping("/login")
     fun login(@RequestBody body: LoginDTO, response: HttpServletResponse): ResponseEntity<Any> {
         val user = this.userService.findByEmail(body.email)
             ?: return ResponseEntity.badRequest().body(Message("user not found!"))
@@ -53,7 +58,7 @@ class AuthController(private val userService: UserService) {
         return ResponseEntity.ok(Message("success"))
     }
 
-    @GetMapping("user")
+    @GetMapping("/user")
     fun user(@CookieValue("jwt") jwt: String?): ResponseEntity<Any> {
         try {
             if (jwt == null) {
@@ -68,7 +73,7 @@ class AuthController(private val userService: UserService) {
         }
     }
 
-    @PostMapping("logout")
+    @PostMapping("/logout")
     fun logout(response: HttpServletResponse): ResponseEntity<Any> {
         val cookie = Cookie("jwt", "")
         cookie.maxAge = 0

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/projects")
+@RequestMapping("/api/projects")
 @Validated
 class ProjectController(
     val projectService: ProjectService,
