@@ -1,37 +1,42 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ModalModule } from 'ngx-bootstrap/modal';
+import { JwtModule } from '@auth0/angular-jwt';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthButtonComponent } from './auth-button/auth-button.component';
-import { CallbackComponent } from './callback/callback.component';
 import { UsersModule } from './layout/users/users.module';
+import { AuthResponseInterceptor } from './_interceptors/auth-response.interceptor';
+
+export function tokenGetter() {
+  return localStorage.getItem('token');
+}
 
 @NgModule({
-  declarations: [AppComponent, AuthButtonComponent, CallbackComponent],
+  declarations: [AppComponent],
   imports: [
     AppRoutingModule,
-    BrowserModule,
-    // AuthModule.forRoot({
-    //   domain: 'dev-jgic7c86.us.auth0.com',
-    //   clientId: 'Z4XSB56FZ77jJnerZopMfBExtUD1YaTD',
-    //   redirectUri: `${window.location.origin}/callback`,
-    //   httpInterceptor: {
-    //     allowedList: [
-    //       'http://localhost:8080/*'
-    //     ]
-    //   }
-    // }),
-    // FormsModule,
-    HttpClientModule,
-    // ReactiveFormsModule,
-    UsersModule,
     BrowserAnimationsModule,
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter,
+        allowedDomains: ['localhost:8080'],
+        disallowedRoutes: ['localhost:8080/api/auth'],
+      },
+    }),
+    ReactiveFormsModule,
+    UsersModule,
   ],
   providers: [
-    // { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthResponseInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })

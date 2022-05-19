@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/time-entries")
+@RequestMapping("/api/time-entries")
 @Validated
 class TimeEntryController(
     val timeEntryService: TimeEntryService

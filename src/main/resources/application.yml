@@ -1,6 +1,3 @@
-auth0:
-  audience: http://tense-lite.demo
-
 spring:
   jpa:
     generate-ddl: false
@@ -26,8 +23,6 @@ spring:
   jackson:
     date-format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: https://dev-jgic7c86.us.auth0.com/
+jwt:
+  secret: secret
+  expirationInMs: 86400000 # 1 day
