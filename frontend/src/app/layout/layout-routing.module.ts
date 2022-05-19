@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { AuthGuard } from '../_guards/auth.guard';
 import { LayoutComponent } from './layout.component';
 
 const routes: Routes = [
@@ -8,10 +11,14 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       { path: '', redirectTo: 'time-entries', pathMatch: 'prefix' },
+      { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterComponent },
       {
         path: 'projects',
         loadChildren: () =>
           import('./projects/projects.module').then((m) => m.ProjectsModule),
+        canActivate: [AuthGuard],
+        data: { roles: ['ADMIN', 'BASIC'] },
       },
       {
         path: 'time-entries',
@@ -19,11 +26,15 @@ const routes: Routes = [
           import('./time-entries/time-entries.module').then(
             (m) => m.TimeEntriesModule
           ),
+        canActivate: [AuthGuard],
+        data: { roles: ['ADMIN', 'BASIC'] },
       },
       {
         path: 'users',
         loadChildren: () =>
           import('./users/users.module').then((m) => m.UsersModule),
+        canActivate: [AuthGuard],
+        data: { roles: ['ADMIN', 'BASIC'] },
       },
     ],
   },

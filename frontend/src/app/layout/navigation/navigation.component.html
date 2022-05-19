@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">Tense Lite</a>
+    <div>
+      <!-- AUTHENTICATED -->
+      <ul
+        class="navbar-nav me-auto mb-2 mb-md-0"
+        *ngIf="authenticated; else unauthenticated"
+      >
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            aria-current="page"
+            href="#"
+            [routerLink]="['/time-entries']"
+            routerLinkActive="active"
+            >Time Entries</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="#"
+            [routerLink]="['/projects']"
+            routerLinkActive="active"
+            >Projects</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="#"
+            [routerLink]="['/users']"
+            routerLinkActive="active"
+            >Users</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" (click)="logout()"
+            >Logout</a
+          >
+        </li>
+      </ul>
+      <!-- UNAUTHENTICATED -->
+      <ng-template #unauthenticated>
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" routerLink="/login"
+              >Login</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              aria-current="page"
+              routerLink="/register"
+              >Register</a
+            >
+          </li>
+        </ul>
+      </ng-template>
+    </div>
+  </div>
+</nav>

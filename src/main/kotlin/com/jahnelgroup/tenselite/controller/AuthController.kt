@@ -4,19 +4,37 @@ import com.jahnelgroup.tenselite.dtos.LoginDTO
 import com.jahnelgroup.tenselite.dtos.Message
 import com.jahnelgroup.tenselite.dtos.RegisterDTO
 import com.jahnelgroup.tenselite.models.User
+import com.jahnelgroup.tenselite.security.JwtAuthenticationResponse
+import com.jahnelgroup.tenselite.security.JwtTokenProvider
+import com.jahnelgroup.tenselite.security.UserPrincipal
+import com.jahnelgroup.tenselite.service.UserContextService
 import com.jahnelgroup.tenselite.service.UserService
-
-import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
-import java.util.*
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletResponse
 
 @RestController
 @RequestMapping("/api/auth")
-class AuthController(private val userService: UserService) {
+class AuthController(
+    private val authenticationManager: AuthenticationManager,
+    private val jwtTokenProvider: JwtTokenProvider,
+    private val requestContextService: UserContextService,
+    private val userService: UserService
+) {
+    @Value("\${jwt.secret}")
+    private val jwtSecret: String = String()
+
+    @Value("\${jwt.expirationInMs}")
+    private val jwtExpirationInMs: Int = 0
 
     @PostMapping("register")
     fun register(@RequestBody body: RegisterDTO): ResponseEntity<Any> {
@@ -36,50 +54,21 @@ class AuthController(private val userService: UserService) {
 
     @PostMapping("/login")
     fun login(@RequestBody body: LoginDTO, response: HttpServletResponse): ResponseEntity<Any> {
-        val user = this.userService.findByEmail(body.email)
-            ?: return ResponseEntity.badRequest().body(Message("user not found!"))
+        val authentication: Authentication = authenticationManager.authenticate(
+            UsernamePasswordAuthenticationToken(body.email, body.password)
+        )
 
-        if (!user.comparePassword(body.password)) {
-            return ResponseEntity.badRequest().body(Message("invalid password!"))
-        }
+        SecurityContextHolder.getContext().authentication = authentication
 
-        val issuer = user.id.toString()
-
-        val jwt = Jwts.builder()
-            .setIssuer(issuer)
-            .setExpiration(Date(System.currentTimeMillis() + 60 * 24 * 1000)) // 1 day
-            .signWith(SignatureAlgorithm.HS512, "secret").compact()
+        val userPrincipal = authentication.principal as UserPrincipal
+        val user = this.userService.getById(userPrincipal.id)
+        val jwt = jwtTokenProvider.generateToken(authentication)
 
         val cookie = Cookie("jwt", jwt)
         cookie.isHttpOnly = true
 
         response.addCookie(cookie)
 
-        return ResponseEntity.ok(Message("success"))
-    }
-
-    @GetMapping("/user")
-    fun user(@CookieValue("jwt") jwt: String?): ResponseEntity<Any> {
-        try {
-            if (jwt == null) {
-                return ResponseEntity.status(401).body(Message("unauthenticated"))
-            }
-
-            val body = Jwts.parser().setSigningKey("secret").parseClaimsJws(jwt).body
-
-            return ResponseEntity.ok(this.userService.getById(body.issuer.toInt()))
-        } catch (e: Exception) {
-            return ResponseEntity.status(401).body(Message("unauthenticated"))
-        }
-    }
-
-    @PostMapping("/logout")
-    fun logout(response: HttpServletResponse): ResponseEntity<Any> {
-        val cookie = Cookie("jwt", "")
-        cookie.maxAge = 0
-
-        response.addCookie(cookie)
-
-        return ResponseEntity.ok(Message("success"))
+        return ResponseEntity.ok(JwtAuthenticationResponse(jwt, user))
     }
 }
