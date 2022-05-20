@@ -1,7 +1,5 @@
-<section class="border">
-  <p>project-list component</p>
-
-  <button class="btn btn-primary" (click)="openProjectModal()">
+<section>
+  <button class="btn btn-primary" (click)="openProjectModal()" *appIsAdmin>
     + New Project
   </button>
 

@@ -7,9 +7,7 @@ import com.jahnelgroup.tenselite.models.User
 import com.jahnelgroup.tenselite.security.JwtAuthenticationResponse
 import com.jahnelgroup.tenselite.security.JwtTokenProvider
 import com.jahnelgroup.tenselite.security.UserPrincipal
-import com.jahnelgroup.tenselite.service.UserContextService
 import com.jahnelgroup.tenselite.service.UserService
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -27,14 +25,8 @@ import javax.servlet.http.HttpServletResponse
 class AuthController(
     private val authenticationManager: AuthenticationManager,
     private val jwtTokenProvider: JwtTokenProvider,
-    private val requestContextService: UserContextService,
     private val userService: UserService
 ) {
-    @Value("\${jwt.secret}")
-    private val jwtSecret: String = String()
-
-    @Value("\${jwt.expirationInMs}")
-    private val jwtExpirationInMs: Int = 0
 
     @PostMapping("register")
     fun register(@RequestBody body: RegisterDTO): ResponseEntity<Any> {

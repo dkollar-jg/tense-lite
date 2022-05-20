@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  submit(): void {
+  submitHandler(): void {
     this.authService.login(this.loginForm.getRawValue());
   }
 }

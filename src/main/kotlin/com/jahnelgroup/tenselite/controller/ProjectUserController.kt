@@ -29,10 +29,17 @@ class ProjectUserController(
     }
 
     @GetMapping("/projects/{projectId}/users")
-    fun findProjectUsers(
+    fun findProjectUsersByProject(
         @PathVariable(value = "projectId") projectId: Long
     ): List<ProjectUser> {
         return projectUserService.findByProjectId(projectId)
+    }
+
+    @GetMapping("/users/{userId}/projects")
+    fun findProjectUsersByUser(
+        @PathVariable(value = "userId") userId: Long
+    ): List<ProjectUser> {
+        return projectUserService.findByUserId(userId)
     }
 
     @PostMapping("/projects/{projectId}/users/{userId}")

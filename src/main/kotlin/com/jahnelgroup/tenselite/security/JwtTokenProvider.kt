@@ -26,12 +26,12 @@ class JwtTokenProvider {
             .compact()
     }
 
-    fun getUserIdFromJwt(token: String): Int {
+    fun getUserIdFromJwt(token: String): Long {
         val claims = Jwts.parser()
             .setSigningKey(jwtSecret)
             .parseClaimsJws(token)
             .body
-        return claims.subject.toInt()
+        return claims.subject.toLong()
     }
 
     fun validateToken(token: String): Boolean {

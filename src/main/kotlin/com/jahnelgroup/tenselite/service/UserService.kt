@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service
 
 interface UserService {
     fun findAll(): List<User>
-    fun findById(id: Int): User
+    fun findById(id: Long): User
     fun create(user: User): User
-    fun update(user: UpdateUserDto, id: Int): User
-    fun delete(id: Int)
+    fun update(user: UpdateUserDto, id: Long): User
+    fun delete(id: Long)
     fun save(user: User): User
     fun findByEmail(email: String): User?
-    fun getById(id: Int): User
+    fun getById(id: Long): User
 }
 
 @Service
@@ -26,7 +26,7 @@ class UserServiceImpl(
         return userRepository.findAll()
     }
 
-    override fun findById(id: Int): User {
+    override fun findById(id: Long): User {
         return userRepository.findByIdOrNull(id) ?: throw NotFoundException("User with id $id does not exist.")
     }
 
@@ -40,7 +40,7 @@ class UserServiceImpl(
         return userRepository.save(user)
     }
 
-    override fun update(user: UpdateUserDto, id: Int): User {
+    override fun update(user: UpdateUserDto, id: Long): User {
         val originalUser = userRepository.findByIdOrNull(id) ?: throw NotFoundException("User with id $id does not exist.")
 
         user.firstName?.also { originalUser.firstName = it }
@@ -50,7 +50,7 @@ class UserServiceImpl(
         return userRepository.save(originalUser)
     }
 
-    override fun delete(id: Int) {
+    override fun delete(id: Long) {
         userRepository.findByIdOrNull(id) ?: throw NotFoundException("User with id $id does not exist.")
         userRepository.deleteById(id)
     }
@@ -63,7 +63,7 @@ class UserServiceImpl(
         return this.userRepository.findByEmail(email)
     }
 
-    override fun getById(id: Int): User {
+    override fun getById(id: Long): User {
         return this.userRepository.findById(id).get()
     }
 }

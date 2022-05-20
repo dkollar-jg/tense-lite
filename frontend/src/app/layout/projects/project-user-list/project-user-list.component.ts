@@ -4,7 +4,6 @@ import { ProjectUser } from '../../../_models/project-user.model';
 import { Project } from '../../../_models/project.model';
 import { User } from '../../../_models/user.model';
 import { ProjectUsersService } from '../../../_services/project-users.service';
-import { UsersService } from '../../../_services/users.service';
 import { ProjectUserModalComponent } from '../project-user-modal/project-user-modal.component';
 
 @Component({
@@ -35,7 +34,7 @@ export class ProjectUserListComponent implements OnInit {
       startDate: null,
       endDate: null,
     };
-    const initialState: ModalOptions = {
+    const modalOptions: ModalOptions = {
       initialState: {
         project: this.project,
         projects: this.projects,
@@ -47,7 +46,7 @@ export class ProjectUserListComponent implements OnInit {
     };
     this.bsModalRef = this.modalService.show(
       ProjectUserModalComponent,
-      initialState
+      modalOptions
     );
     this.bsModalRef.content.projectUserEvent.subscribe(
       (projectUser: ProjectUser) => {
@@ -57,7 +56,7 @@ export class ProjectUserListComponent implements OnInit {
   }
 
   openProjectUserEditModal(projectUser: ProjectUser) {
-    const initialState: ModalOptions = {
+    const modalOptions: ModalOptions = {
       initialState: {
         project: this.project,
         projects: this.projects,
@@ -69,7 +68,7 @@ export class ProjectUserListComponent implements OnInit {
     };
     this.bsModalRef = this.modalService.show(
       ProjectUserModalComponent,
-      initialState
+      modalOptions
     );
     this.bsModalRef.content.projectUserEvent.subscribe(
       (projectUser: ProjectUser) => {

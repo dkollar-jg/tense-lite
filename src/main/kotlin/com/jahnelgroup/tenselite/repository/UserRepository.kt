@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface UserRepository: JpaRepository<User, Int> {
+interface UserRepository: JpaRepository<User, Long> {
     fun findByEmail(email: String): User?
 }

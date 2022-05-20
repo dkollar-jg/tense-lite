@@ -42,12 +42,12 @@ export class UserListComponent implements OnInit, OnDestroy {
       email: '',
       isAdmin: false,
     };
-    const initialState: ModalOptions = {
+    const modalOptions: ModalOptions = {
       initialState: {
         user: newUser,
       },
     };
-    this.bsModalRef = this.modalService.show(UserModalComponent, initialState);
+    this.bsModalRef = this.modalService.show(UserModalComponent, modalOptions);
     this.bsModalRef.content.userEvent.subscribe((user: User) => {
       this.usersService.createUser(user);
     });

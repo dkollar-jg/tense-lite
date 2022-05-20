@@ -1,7 +1,7 @@
-<section class="border">
-  <p>user component</p>
-
-  <button class="btn btn-primary" (click)="openUserModal()">Edit User</button>
+<section>
+  <button class="btn btn-primary" (click)="openUserModal()" *appIsAdminØ>
+    Edit User
+  </button>
 
   <div>{{ user.firstName }} {{ user.lastName }}</div>
   <div>

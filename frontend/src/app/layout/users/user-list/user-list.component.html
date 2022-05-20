@@ -1,7 +1,7 @@
-<section class="border">
-  <p>user-list component</p>
-
-  <button class="btn btn-primary" (click)="openUserModal()">+ New User</button>
+<section>
+  <button class="btn btn-primary" (click)="openUserModal()" *appIsAdmin>
+    + New User
+  </button>
 
   <table class="table table-striped">
     <thead>

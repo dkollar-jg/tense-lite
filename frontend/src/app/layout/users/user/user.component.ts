@@ -35,12 +35,12 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   openUserModal() {
-    const initialState: ModalOptions = {
+    const modalOptions: ModalOptions = {
       initialState: {
         user: this.user,
       },
     };
-    this.bsModalRef = this.modalService.show(UserModalComponent, initialState);
+    this.bsModalRef = this.modalService.show(UserModalComponent, modalOptions);
     this.bsModalRef.content.userEvent.subscribe((user: User) => {
       this.usersService.updateUser(user);
     });

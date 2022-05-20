@@ -1,12 +1,9 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { UsersService } from "../_services/users.service";
+import { User } from "../_models/user.model";
 
 @Pipe({ name: 'userFullName' })
 export class UserFullNamePipe implements PipeTransform {
-  constructor(private usersService: UsersService) {}
-
-  transform(value: number): string {
-    const users = this.usersService.getUsers();
+  transform(value: number, users: User[]): string {
     const user = users.find(u => u.id === value);
     return `${user?.firstName} ${user?.lastName}`;
   }

@@ -7,6 +7,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UsersModule } from './layout/users/users.module';
+import { DirectivesModule } from './_directives/directives.module';
 import { AuthResponseInterceptor } from './_interceptors/auth-response.interceptor';
 
 export function tokenGetter() {
