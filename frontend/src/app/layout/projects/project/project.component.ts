@@ -53,14 +53,14 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   openProjectModal() {
-    const initialState: ModalOptions = {
+    const modalOptions: ModalOptions = {
       initialState: {
         project: this.project,
       },
     };
     this.bsModalRef = this.modalService.show(
       ProjectModalComponent,
-      initialState
+      modalOptions
     );
     this.bsModalRef.content.projectEvent.subscribe((project: Project) => {
       this.projectsService.updateProject(project);

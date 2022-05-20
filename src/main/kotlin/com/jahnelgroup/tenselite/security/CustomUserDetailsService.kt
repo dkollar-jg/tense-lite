@@ -16,7 +16,7 @@ class CustomUserDetailsService(
     }
 
     // This method is used by JWTAuthenticationFilter
-    fun loadUserById(id: Int): UserDetails {
+    fun loadUserById(id: Long): UserDetails {
         val user = userService.findById(id)
         return user?.let { UserPrincipal(user.id, user.firstName, user.lastName, user.email, user.password, user.isAdmin) }
     }

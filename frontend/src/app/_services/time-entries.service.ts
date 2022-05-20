@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { TimeEntry } from '../_models/time-entry.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProjectsService {
+export class timeEntriesService {
   baseUrl = environment.apiUrl;
 
   timeEntryChanged = new Subject<TimeEntry>();
@@ -36,11 +36,30 @@ export class ProjectsService {
     this.timeEntriesChanged.next(this.timeEntries.slice());
   }
 
-  fetchTimeEntries(): void {
-    this.http
-      .get<TimeEntry[]>(`${this.baseUrl}/time-entries`)
-      .subscribe((timeEntries) => {
+  fetchTimeEntries(): Observable<TimeEntry[]> {
+    return this.http.get<TimeEntry[]>(`${this.baseUrl}/time-entries`).pipe(
+      tap((timeEntries) => {
         this.setTimeEntries(timeEntries);
+      })
+    );
+  }
+
+  fetchTimeEntriesByUserId(userId: number): Observable<TimeEntry[]> {
+    return this.http
+      .get<TimeEntry[]>(`${this.baseUrl}/time-entries/users/${userId}`)
+      .pipe(
+        tap((timeEntries) => {
+          this.setTimeEntries(timeEntries);
+        })
+      );
+  }
+
+  createTimeEntry(createTimeEntry: TimeEntry) {
+    this.http
+      .post<TimeEntry>(`${this.baseUrl}/time-entries`, createTimeEntry)
+      .subscribe((timeEntry) => {
+        this.timeEntries.push(timeEntry);
+        this.timeEntriesChanged.next(this.timeEntries.slice());
       });
   }
 
@@ -59,7 +78,7 @@ export class ProjectsService {
 
   deleteTimeEntry(id: number) {
     this.http
-      .delete<Boolean>(`${this.baseUrl}/time-entries`)
+      .delete<Boolean>(`${this.baseUrl}/time-entries/${id}`)
       .subscribe((isDeleted) => {
         if (isDeleted) {
           const index = this.timeEntries.findIndex((te) => te.id === id);

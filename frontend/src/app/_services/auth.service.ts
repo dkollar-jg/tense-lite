@@ -31,6 +31,10 @@ export class AuthService {
     return this.currentUser;
   }
 
+  getCurrentUserId() {
+    return localStorage.getItem('userId') || null;
+  }
+
   setCurrentUser(user?: User | null | undefined) {
     this.currentUser = user;
     this.currentUserChanged.next(this.currentUser);
@@ -45,7 +49,7 @@ export class AuthService {
         console.log(this.currentUser);
         this.decodedToken = this.jwtHelper.decodeToken(response.accessToken);
         localStorage.setItem('token', response.accessToken);
-        localStorage.setItem('user', response.user);
+        localStorage.setItem('userId', response.user.id);
         this.router.navigate(['/']);
       });
   }
@@ -54,7 +58,7 @@ export class AuthService {
     this.setAuthenticated(false);
     this.setCurrentUser(null);
     localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem('userId');
     this.decodedToken = null;
     this.router.navigate(['/login']);
   }

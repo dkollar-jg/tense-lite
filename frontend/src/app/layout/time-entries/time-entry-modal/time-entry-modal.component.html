@@ -1,0 +1,121 @@
+<section>
+  <div class="modal-header">
+    <h4 class="modal-title">Add Time Entry</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="bsModalRef.hide()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form
+      [formGroup]="timeEntryForm"
+      (ngSubmit)="submitHandler()"
+      id="timeEntryForm"
+    >
+      <div class="mb-3">
+        <label for="userId" class="form-label">Project</label>
+        <select
+          class="form-control"
+          id="projectId"
+          formControlName="projectId"
+          [ngClass]="{
+            'is-invalid': submitted && timeEntryForm.get('projectId')?.errors
+          }"
+        >
+          <option
+            *ngFor="let project of availableProjects"
+            value="{{ project.id }}"
+          >
+            {{ project.name }}
+          </option>
+        </select>
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            submitted && timeEntryForm.get('projectId')?.hasError('required')
+          "
+        >
+          Required
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="hours" class="form-label">Hours</label>
+        <input
+          type="number"
+          step="0.25"
+          class="form-control"
+          id="hours"
+          formControlName="hours"
+          [ngClass]="{
+            'is-invalid': submitted && timeEntryForm.get('hours')?.errors
+          }"
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="submitted && timeEntryForm.get('hours')?.hasError('required')"
+        >
+          Required
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="entryDate">Entry Date</label>
+        <input
+          class="form-control"
+          id="entryDate"
+          formControlName="entryDate"
+          [ngClass]="{
+            'is-invalid': submitted && timeEntryForm.get('entryDate')?.errors
+          }"
+          bsDatepicker
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            submitted && timeEntryForm.get('entryDate')?.hasError('required')
+          "
+        >
+          Required
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="entryNotes">Entry Notes</label>
+        <textarea
+          class="form-control"
+          id="entryNotes"
+          formControlName="entryNotes"
+          rows="3"
+          [ngClass]="{
+            'is-invalid': submitted && timeEntryForm.get('entryNotes')?.errors
+          }"
+        ></textarea>
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            submitted && timeEntryForm.get('entryNotes')?.hasError('required')
+          "
+        >
+          Required
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary-light"
+      (click)="bsModalRef.hide()"
+    >
+      Close
+    </button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      form="timeEntryForm"
+      [disabled]="submitted && !timeEntryForm.valid"
+    >
+      Save
+    </button>
+  </div>
+</section>

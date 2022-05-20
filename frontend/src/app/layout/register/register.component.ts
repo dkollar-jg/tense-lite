@@ -26,7 +26,7 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  submit(): void {
+  submitHandler(): void {
     this.http
       .post(
         'http://localhost:8080/api/auth/register',

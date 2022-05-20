@@ -1,12 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ProjectUser } from '../../../_models/project-user.model';
 import { Project } from '../../../_models/project.model';
 import { User } from '../../../_models/user.model';
 import { HelperService } from '../../../_services/helper.service';
-import { ProjectsService } from '../../../_services/projects.service';
-import { UsersService } from '../../../_services/users.service';
 
 @Component({
   selector: 'app-project-user-modal',

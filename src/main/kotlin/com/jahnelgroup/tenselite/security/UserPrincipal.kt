@@ -4,7 +4,7 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 data class UserPrincipal(
-    var id: Int,
+    var id: Long,
     var firstName: String,
     var lastName: String,
     var email: String,

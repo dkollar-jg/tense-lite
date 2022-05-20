@@ -41,9 +41,9 @@ CREATE TABLE IF NOT EXISTS time_entry (
 );
 
 INSERT IGNORE INTO user (id, first_name, last_name, email, password, is_admin) VALUES
-    (1, "Dan", "Kollar", "dkollar@jahnelgroup.com", "pass", 1),
-    (2, "Jesse", "Lucier", "jlucier@jahnelgroup.com", "pass", 1),
-    (3, "Michael", "Shirk", "mshirk@jahnelgroup.com", "pass", 0);
+    (1, "Dan", "Kollar", "dkollar@jahnelgroup.com", "$2a$10$8ns.62JdvDrjcP9L4SpuluP7YRuO1YJRsCx35hefSDXIYX9NqdGVi", 1),
+    (2, "Jesse", "Lucier", "jlucier@jahnelgroup.com", "$2a$10$8ns.62JdvDrjcP9L4SpuluP7YRuO1YJRsCx35hefSDXIYX9NqdGVi", 1),
+    (3, "Michael", "Shirk", "mshirk@jahnelgroup.com", "$2a$10$8ns.62JdvDrjcP9L4SpuluP7YRuO1YJRsCx35hefSDXIYX9NqdGVi", 0);
 
 INSERT IGNORE INTO project (id, name, is_billable, start_date, end_date) VALUES
     (1, "Jahnel Group", 0, "2014-01-01", "2030-12-31"),

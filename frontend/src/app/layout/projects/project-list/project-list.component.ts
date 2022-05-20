@@ -42,14 +42,14 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       startDate: null,
       endDate: null,
     };
-    const initialState: ModalOptions = {
+    const modalOptions: ModalOptions = {
       initialState: {
         project: newProject,
       },
     };
     this.bsModalRef = this.modalService.show(
       ProjectModalComponent,
-      initialState
+      modalOptions
     );
     this.bsModalRef.content.projectEvent.subscribe((project: Project) => {
       this.projectsService.createProject(project);

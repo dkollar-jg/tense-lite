@@ -24,7 +24,7 @@ class UserController(
 
     @GetMapping("/{id}")
     fun findById(
-        @PathVariable(value = "id") id: Int
+        @PathVariable(value = "id") id: Long
     ): User {
         return userService.findById(id)
     }
@@ -47,7 +47,7 @@ class UserController(
 
     @PatchMapping("/{id}")
     fun update(
-        @PathVariable(value = "id") id: Int,
+        @PathVariable(value = "id") id: Long,
         @Valid @RequestBody user: UpdateUserDto,
     ): ResponseEntity<Any> {
         if (user.email != null) {
@@ -61,7 +61,7 @@ class UserController(
 
     @DeleteMapping("/{id}")
     fun delete(
-        @PathVariable(value = "id") id: Int
+        @PathVariable(value = "id") id: Long
     ): ResponseEntity<Boolean> {
         userService.delete(id)
         return ResponseEntity.ok().build()

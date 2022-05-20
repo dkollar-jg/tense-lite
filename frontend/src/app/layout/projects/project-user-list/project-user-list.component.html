@@ -1,6 +1,4 @@
-<section class="border">
-  <p>project-list component</p>
-
+<section>
   <button class="btn btn-primary" (click)="openProjectUserCreateModal()">
     + New Project User
   </button>
@@ -18,11 +16,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr
-        *ngFor="let projectUser of projectUsers; index as i"
-        class="clickable"
-      >
-        <th scope="row">{{ projectUser.userId | userFullName }}</th>
+      <tr *ngFor="let projectUser of projectUsers; index as i">
+        <th scope="row">{{ projectUser.userId | userFullName: users }}</th>
         <td>{{ projectUser.hourlyRate | currency }}</td>
         <td>{{ projectUser.startDate | date }}</td>
         <td>{{ projectUser.endDate | date }}</td>
@@ -33,19 +28,31 @@
           ></i>
         </td>
         <td>
-          <button (click)="openProjectUserEditModal(projectUser)">
-            <i class="bi bi-pencil-fill text-primary"></i>
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-sm"
+            (click)="openProjectUserEditModal(projectUser)"
+          >
+            <i class="bi bi-pencil-fill"></i>
           </button>
         </td>
         <td *ngIf="projectUser.enabled; else enable">
-          <button (click)="removeProjectUser(projectUser)">
-            <i class="bi bi-dash-circle-fill text-primary"></i>
+          <button
+            type="button"
+            class="btn btn-outline-danger btn-sm"
+            (click)="removeProjectUser(projectUser)"
+          >
+            <i class="bi bi-dash-circle-fill"></i>
           </button>
         </td>
         <ng-template #enable>
           <td>
-            <button (click)="enableProjectUser(projectUser)">
-              <i class="bi bi-plus-circle-fill text-primary"></i>
+            <button
+              type="button"
+              class="btn btn-outline-success btn-sm"
+              (click)="enableProjectUser(projectUser)"
+            >
+              <i class="bi bi-plus-circle-fill"></i>
             </button>
           </td>
         </ng-template>

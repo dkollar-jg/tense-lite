@@ -59,6 +59,6 @@ class TimeEntryController(
     @DeleteMapping("/{id}")
     fun delete(@PathVariable(value = "id") id: Long): ResponseEntity<Boolean> {
         timeEntryService.delete(id)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.ok(true)
     }
 }

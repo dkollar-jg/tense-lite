@@ -31,6 +31,17 @@ export class ProjectUsersService {
       );
   }
 
+  fetchProjectUsersByUser(userId: number): Observable<ProjectUser[]> {
+    return this.http
+      .get<ProjectUser[]>(`${this.baseUrl}/users/${userId}/projects`)
+      .pipe(
+        tap((projectUsers) => {
+          this.setProjectUsers(projectUsers);
+          this.projectUsersChanged.next(this.projectUsers.slice());
+        })
+      );
+  }
+
   createProjectUser(createProjectUser: ProjectUser) {
     const { projectId, userId } = createProjectUser;
     this.http
