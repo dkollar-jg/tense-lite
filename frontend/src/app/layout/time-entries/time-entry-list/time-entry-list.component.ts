@@ -53,7 +53,7 @@ export class TimeEntryListComponent implements OnInit {
     const newTimeEntry = {
       id: null,
       projectId: null,
-      userId: this.authService.getCurrentUserId(),
+      userId: this.authService.getCurrentUser()?.id,
       entryDate: null,
       entryNotes: null,
       hours: null,

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { DirectivesModule } from '../../_directives/directives.module';
 import { PipesModule } from '../../_pipes/pipes.module';
 import { ProjectListResolver } from '../../_resolvers/project-list.resolver';
 import { ProjectUserListByUserResolver } from '../../_resolvers/project-user-list-by-user.resolver';
@@ -21,6 +22,7 @@ import { TimeEntryModalComponent } from './time-entry-modal/time-entry-modal.com
   imports: [
     BsDatepickerModule.forRoot(),
     CommonModule,
+    DirectivesModule,
     FormsModule,
     ModalModule.forRoot(),
     PipesModule,

@@ -5,6 +5,7 @@ import com.jahnelgroup.tenselite.exceptions.NotFoundException
 import com.jahnelgroup.tenselite.models.ProjectUserId
 import com.jahnelgroup.tenselite.models.TimeEntry
 import com.jahnelgroup.tenselite.repository.TimeEntryRepository
+import com.jahnelgroup.tenselite.validator.TimeEntryValidator
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -21,7 +22,8 @@ interface TimeEntryService {
 @Service
 class TimeEntryServiceImpl(
     val projectUserService: ProjectUserService,
-    val timeEntryRepository: TimeEntryRepository
+    val timeEntryRepository: TimeEntryRepository,
+    val timeEntryValidator: TimeEntryValidator
 ): TimeEntryService {
     override fun findAll(): List<TimeEntry> {
         return timeEntryRepository.findAll()
@@ -40,6 +42,7 @@ class TimeEntryServiceImpl(
     }
 
     override fun create(timeEntry: TimeEntry): TimeEntry {
+        timeEntryValidator.validate(timeEntry)
         val projectUser = projectUserService.findById(ProjectUserId(timeEntry.projectId, timeEntry.userId))
         timeEntry.hourlyRate = projectUser.hourlyRate
         timeEntry.entryDollarValue = timeEntry.hourlyRate?.let { timeEntry.hours?.times(it) }
@@ -55,11 +58,13 @@ class TimeEntryServiceImpl(
         timeEntry.hours?.also { originalTimeEntry.hours = it }
         originalTimeEntry.entryDollarValue = originalTimeEntry.hourlyRate?.let { originalTimeEntry.hours?.times(it) }
 
+        timeEntryValidator.validate(originalTimeEntry)
         return timeEntryRepository.save(originalTimeEntry)
     }
 
     override fun delete(id: Long) {
-        timeEntryRepository.findByIdOrNull(id) ?: throw NotFoundException("TimeEntry with id $id does not exist")
+        val timeEntry = timeEntryRepository.findByIdOrNull(id) ?: throw NotFoundException("TimeEntry with id $id does not exist")
+        timeEntryValidator.validate(timeEntry)
         timeEntryRepository.deleteById(id)
     }
 }

@@ -1,6 +1,5 @@
-package com.jahnelgroup.tenselite.service
+package com.jahnelgroup.tenselite.security
 
-import com.jahnelgroup.tenselite.security.UserPrincipal
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 
