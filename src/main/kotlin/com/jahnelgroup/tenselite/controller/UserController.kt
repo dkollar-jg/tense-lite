@@ -6,6 +6,7 @@ import com.jahnelgroup.tenselite.dtos.UpdateUserDto
 import com.jahnelgroup.tenselite.models.User
 import com.jahnelgroup.tenselite.service.UserService
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
@@ -30,6 +31,7 @@ class UserController(
     }
 
     @PostMapping
+    @PreAuthorize("isAdmin()")
     fun create(
         @Valid @RequestBody createUserDto: CreateUserDto
     ): ResponseEntity<Any> {
@@ -46,6 +48,7 @@ class UserController(
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("isAdmin()")
     fun update(
         @PathVariable(value = "id") id: Long,
         @Valid @RequestBody user: UpdateUserDto,
@@ -60,6 +63,7 @@ class UserController(
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAdmin()")
     fun delete(
         @PathVariable(value = "id") id: Long
     ): ResponseEntity<Boolean> {

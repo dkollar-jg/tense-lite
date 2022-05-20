@@ -6,6 +6,7 @@ import com.jahnelgroup.tenselite.exceptions.NotFoundException
 import com.jahnelgroup.tenselite.models.ProjectUser
 import com.jahnelgroup.tenselite.models.ProjectUserId
 import com.jahnelgroup.tenselite.repository.ProjectUserRepository
+import com.jahnelgroup.tenselite.security.UserContextService
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -20,7 +21,8 @@ interface ProjectUserService {
 
 @Service
 class ProjectUserServiceImpl(
-    val projectUserRepository: ProjectUserRepository
+    val projectUserRepository: ProjectUserRepository,
+    val userContextService: UserContextService
 ): ProjectUserService {
     override fun findById(projectUserId: ProjectUserId): ProjectUser {
         return projectUserRepository.findByIdOrNull(projectUserId) ?: throw NotFoundException("ProjectUser with projectId ${projectUserId.projectId} and userId ${projectUserId.userId} does not exist.")

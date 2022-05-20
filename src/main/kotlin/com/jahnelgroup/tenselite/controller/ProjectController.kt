@@ -5,6 +5,7 @@ import com.jahnelgroup.tenselite.models.Project
 import com.jahnelgroup.tenselite.service.ProjectService
 import com.jahnelgroup.tenselite.service.ProjectUserService
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
@@ -30,6 +31,7 @@ class ProjectController(
     }
 
     @PostMapping
+    @PreAuthorize("isAdmin()")
     fun create(
         @Valid @RequestBody project: Project
     ): Project {
@@ -37,6 +39,7 @@ class ProjectController(
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("isAdmin()")
     fun update(
         @PathVariable(value = "id") id: Long,
         @Valid @RequestBody project: UpdateProjectDto,
@@ -45,6 +48,7 @@ class ProjectController(
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAdmin()")
     fun delete(
         @PathVariable(value = "id") id: Long
     ): ResponseEntity<Boolean> {
