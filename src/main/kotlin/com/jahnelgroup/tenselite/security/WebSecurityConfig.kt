@@ -16,11 +16,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
-    securedEnabled = true,
-    jsr250Enabled = true,
-    prePostEnabled = true
-)
+//@EnableGlobalMethodSecurity(
+//    securedEnabled = true,
+//    jsr250Enabled = true,
+//    prePostEnabled = true
+//)
 class WebSecurityConfig(
     val customUserDetailsService: CustomUserDetailsService,
     val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,

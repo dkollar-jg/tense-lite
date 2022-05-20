@@ -26,7 +26,7 @@ class Project (
     @Column
     var startDate: LocalDate?,
 
-    @field:NotNull(message = "'endDate' is required")
+//    @field:NotNull(message = "'endDate' is required")
     @Column
     var endDate: LocalDate?
 )

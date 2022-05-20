@@ -9,6 +9,7 @@ import com.jahnelgroup.tenselite.models.ProjectUserId
 import com.jahnelgroup.tenselite.models.User
 import com.jahnelgroup.tenselite.service.ProjectUserService
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
@@ -43,6 +44,7 @@ class ProjectUserController(
     }
 
     @PostMapping("/projects/{projectId}/users/{userId}")
+    @PreAuthorize("isAdmin()")
     fun createProjectUser(
         @PathVariable(value = "projectId") projectId: Long,
         @PathVariable(value = "userId") userId: Long,
@@ -52,6 +54,7 @@ class ProjectUserController(
     }
 
     @PatchMapping("/projects/{projectId}/users/{userId}")
+    @PreAuthorize("isAdmin()")
     fun update(
         @PathVariable(value = "projectId") projectId: Long,
         @PathVariable(value = "userId") userId: Long,
@@ -61,6 +64,7 @@ class ProjectUserController(
     }
 
     @DeleteMapping("/projects/{projectId}/users/{userId}")
+    @PreAuthorize("isAdmin()")
     fun deleteProjectUser(
         @PathVariable(value = "projectId") projectId: Long,
         @PathVariable(value = "userId") userId: Long
