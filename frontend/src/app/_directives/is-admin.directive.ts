@@ -17,9 +17,7 @@ export class IsAdminDirective implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('HERE')
     const isAdmin = this.authService.getCurrentUser()?.isAdmin;
-    console.log(this.authService.getCurrentUser());
     if (isAdmin) {
       this.viewContainerRef.createEmbeddedView(this.templateRef);
     } else {

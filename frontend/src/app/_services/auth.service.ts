@@ -42,7 +42,6 @@ export class AuthService {
       .subscribe((response: any) => {
         this.setAuthenticated(true);
         this.setCurrentUser(response.user);
-        console.log(this.currentUser);
         this.decodedToken = this.jwtHelper.decodeToken(response.accessToken);
         localStorage.setItem('token', response.accessToken);
         localStorage.setItem('user', JSON.stringify(response.user));
