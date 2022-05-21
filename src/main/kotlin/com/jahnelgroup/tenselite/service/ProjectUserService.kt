@@ -37,12 +37,11 @@ class ProjectUserServiceImpl(
     }
 
     override fun create(createProjectUserDto: CreateProjectUserDto): ProjectUser {
-        val projectUser = ProjectUser(
-            ProjectUserId(createProjectUserDto.projectId, createProjectUserDto.userId),
-            createProjectUserDto.hourlyRate,
-            createProjectUserDto.startDate,
-            createProjectUserDto.endDate,
-        )
+        val projectUser = ProjectUser()
+        projectUser.projectUserId = ProjectUserId(createProjectUserDto.projectId, createProjectUserDto.userId)
+        projectUser.hourlyRate = createProjectUserDto.hourlyRate
+        projectUser.startDate = createProjectUserDto.startDate
+        projectUser.endDate = createProjectUserDto.endDate
         return projectUserRepository.save(projectUser)
     }
 

@@ -4,6 +4,7 @@ import com.jahnelgroup.tenselite.dtos.UpdateUserDto
 import com.jahnelgroup.tenselite.exceptions.NotFoundException
 import com.jahnelgroup.tenselite.models.User
 import com.jahnelgroup.tenselite.repository.UserRepository
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -22,6 +23,9 @@ interface UserService {
 class UserServiceImpl(
     val userRepository: UserRepository
 ): UserService {
+    @Value("\${jwt.defaultPassword}")
+    private val defaultPassword: String = String()
+
     override fun findAll(): List<User> {
         return userRepository.findAll()
     }
@@ -30,13 +34,8 @@ class UserServiceImpl(
         return userRepository.findByIdOrNull(id) ?: throw NotFoundException("User with id $id does not exist.")
     }
 
-//    override fun findByEmail(email: String): List<User> {
-//        val users = userRepository.findByEmail(email)
-//        if (users.size > 1) throw RuntimeException("Duplicate user email.")
-//        return users
-//    }
-
     override fun create(user: User): User {
+        user.password = defaultPassword
         return userRepository.save(user)
     }
 
@@ -45,7 +44,7 @@ class UserServiceImpl(
 
         user.firstName?.also { originalUser.firstName = it }
         user.lastName?.also { originalUser.lastName = it }
-//        user.isAdmin?.also {originalUser.isAdmin = it }
+        user.isAdmin?.also {originalUser.isAdmin = it }
 
         return userRepository.save(originalUser)
     }
