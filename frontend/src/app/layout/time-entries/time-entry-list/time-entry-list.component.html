@@ -1,45 +1,62 @@
 <section>
-  <button class="btn btn-primary" (click)="openTimeEntryCreateModal()">
-    + New Time Entry
-  </button>
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex justify-content-between">
+        <h5 class="card-title">TIME ENTRIES</h5>
+        <button
+          class="btn btn-primary"
+          (click)="openTimeEntryCreateModal()"
+        >
+          + New Time Entry
+        </button>
+      </div>
+      <table
+        class="table table-striped"
+        *ngIf="timeEntries.length > 0; else noTimeEntries"
+      >
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Entry Date</th>
+            <th scope="col">Project</th>
+            <th scope="col">Hours</th>
+            <th scope="col">Entry Notes</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let timeEntry of timeEntries; index as i">
+            <th scope="row">{{ timeEntry.id }}</th>
+            <td>{{ timeEntry.entryDate | date }}</td>
+            <td>{{ timeEntry.projectId | projectName: projects }}</td>
+            <td>{{ timeEntry.hours }}</td>
+            <td>{{ timeEntry.entryNotes }}</td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-sm"
+                (click)="openTimeEntryEditModal(timeEntry)"
+              >
+                <i class="bi bi-pencil-fill"></i>
+              </button>
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-outline-danger btn-sm"
+                (click)="deleteTimeEntry(timeEntry)"
+              >
+                <i class="bi bi-trash-fill"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-  <table
-    class="table table-striped"
-    *ngIf="timeEntries.length > 0; else noTimeEntries"
-  >
-    <thead>
-      <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Entry Date</th>
-        <th scope="col">Project</th>
-        <th scope="col">Hours</th>
-        <th scope="col">Entry Notes</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let timeEntry of timeEntries; index as i">
-        <th scope="row">{{ timeEntry.id }}</th>
-        <td>{{ timeEntry.entryDate | date }}</td>
-        <td>{{ timeEntry.projectId | projectName: projects }}</td>
-        <td>{{ timeEntry.hours }}</td>
-        <td>{{ timeEntry.entryNotes }}</td>
-        <td>
-          <button type="button" class="btn btn-outline-primary btn-sm" (click)="openTimeEntryEditModal(timeEntry)">
-            <i class="bi bi-pencil-fill"></i>
-          </button>
-        </td>
-        <td>
-          <button type="button" class="btn btn-outline-danger btn-sm" (click)="deleteTimeEntry(timeEntry)">
-            <i class="bi bi-trash-fill"></i>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <ng-template #noTimeEntries>
-    <div>You have not entered any Time Entries.</div>
-  </ng-template>
+      <ng-template #noTimeEntries>
+        <div>You have not entered any Time Entries.</div>
+      </ng-template>
+    </div>
+  </div>
 </section>

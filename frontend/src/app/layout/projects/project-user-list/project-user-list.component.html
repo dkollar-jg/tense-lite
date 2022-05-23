@@ -1,64 +1,72 @@
-<section>
-  <button class="btn btn-primary" (click)="openProjectUserCreateModal()" *appIsAdmin>
-    + New Project User
-  </button>
-
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">User</th>
-        <th scope="col" *appIsAdmin>Hourly Rate</th>
-        <th scope="col">Start Date</th>
-        <th scope="col">End Date</th>
-        <th scope="col">Enabled</th>
-        <th scope="col" *appIsAdmin></th>
-        <th scope="col" *appIsAdmin></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let projectUser of projectUsers; index as i">
-        <th scope="row">{{ projectUser.userId | userFullName: users }}</th>
-        <td *appIsAdmin>{{ projectUser.hourlyRate | currency }}</td>
-        <td>{{ projectUser.startDate | date }}</td>
-        <td>{{ projectUser.endDate | date }}</td>
-        <td>
-          <i
-            *ngIf="projectUser.enabled"
-            class="bi bi-lightning-charge-fill text-primary"
-          ></i>
-        </td>
-        <td *appIsAdmin>
-          <button
-            type="button"
-            class="btn btn-outline-primary btn-sm"
-            (click)="openProjectUserEditModal(projectUser)"
-          >
-            <i class="bi bi-pencil-fill"></i>
-          </button>
-        </td>
-        <td *ngIf="projectUser.enabled; else enable">
-          <button
-            type="button"
-            class="btn btn-outline-danger btn-sm"
-            (click)="removeProjectUser(projectUser)"
-            *appIsAdmin
-          >
-            <i class="bi bi-dash-circle-fill"></i>
-          </button>
-        </td>
-        <ng-template #enable>
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between">
+      <h5 class="card-title">Users</h5>
+      <button
+        class="btn btn-primary"
+        (click)="openProjectUserCreateModal()"
+        *appIsAdmin
+      >
+        + New Project User
+      </button>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col" *appIsAdmin>Hourly Rate</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">End Date</th>
+          <th scope="col">Enabled</th>
+          <th scope="col" *appIsAdmin></th>
+          <th scope="col" *appIsAdmin></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let projectUser of projectUsers; index as i">
+          <th scope="row">{{ projectUser.userId | userFullName: users }}</th>
+          <td *appIsAdmin>{{ projectUser.hourlyRate | currency }}</td>
+          <td>{{ projectUser.startDate | date }}</td>
+          <td>{{ projectUser.endDate | date }}</td>
           <td>
+            <i
+              *ngIf="projectUser.enabled"
+              class="bi bi-wind"
+            ></i>
+          </td>
+          <td *appIsAdmin>
             <button
               type="button"
-              class="btn btn-outline-success btn-sm"
-              (click)="enableProjectUser(projectUser)"
-              *appIsAdmin
+              class="btn btn-outline-primary btn-sm"
+              (click)="openProjectUserEditModal(projectUser)"
             >
-              <i class="bi bi-plus-circle-fill"></i>
+              <i class="bi bi-pencil-fill"></i>
             </button>
           </td>
-        </ng-template>
-      </tr>
-    </tbody>
-  </table>
-</section>
+          <td *ngIf="projectUser.enabled; else enable">
+            <button
+              type="button"
+              class="btn btn-outline-danger btn-sm"
+              (click)="removeProjectUser(projectUser)"
+              *appIsAdmin
+            >
+              <i class="bi bi-dash-circle-fill"></i>
+            </button>
+          </td>
+          <ng-template #enable>
+            <td>
+              <button
+                type="button"
+                class="btn btn-outline-success btn-sm"
+                (click)="enableProjectUser(projectUser)"
+                *appIsAdmin
+              >
+                <i class="bi bi-plus-circle-fill"></i>
+              </button>
+            </td>
+          </ng-template>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
