@@ -1,0 +1,27 @@
+<section>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Project</th>
+        <th scope="col" *appIsAdmin>Hourly Rate</th>
+        <th scope="col">Start Date</th>
+        <th scope="col">End Date</th>
+        <th scope="col">Enabled</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let projectUser of projectUsers; index as i">
+        <th scope="row">{{ projectUser.projectId | projectName: projects }}</th>
+        <td *appIsAdmin>{{ projectUser.hourlyRate | currency }}</td>
+        <td>{{ projectUser.startDate | date }}</td>
+        <td>{{ projectUser.endDate | date }}</td>
+        <td>
+          <i
+            *ngIf="projectUser.enabled"
+            class="bi bi-lightning-charge-fill text-primary"
+          ></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
