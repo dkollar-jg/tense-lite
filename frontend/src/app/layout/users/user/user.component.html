@@ -8,4 +8,9 @@
     {{ user.email }}
   </div>
   <div>Role: {{ user.isAdmin ? "Admin" : "Basic" }}</div>
+
+  <app-user-project-list
+    [projects]="projects"
+    [projectUsers]="projectUsers"
+  ></app-user-project-list>
 </section>

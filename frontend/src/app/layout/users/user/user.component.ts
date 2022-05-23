@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
+import { ProjectUser } from '../../../_models/project-user.model';
+import { Project } from '../../../_models/project.model';
 import { User } from '../../../_models/user.model';
 import { UsersService } from '../../../_services/users.service';
 import { UserModalComponent } from '../user-modal/user-modal.component';
@@ -14,6 +16,8 @@ import { UserModalComponent } from '../user-modal/user-modal.component';
 export class UserComponent implements OnInit, OnDestroy {
   bsModalRef: BsModalRef;
   subscription: Subscription;
+  projects: Project[];
+  projectUsers: ProjectUser[];
   user: User;
 
   constructor(
@@ -24,6 +28,8 @@ export class UserComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
+      this.projects = data.projects;
+      this.projectUsers = data.projectUsers;
       this.user = data.user;
     });
     this.subscription = this.usersService.userChanged.subscribe(

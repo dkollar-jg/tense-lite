@@ -6,7 +6,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { DirectivesModule } from '../../_directives/directives.module';
 import { PipesModule } from '../../_pipes/pipes.module';
 import { ProjectListResolver } from '../../_resolvers/project-list.resolver';
-import { ProjectUserListByUserResolver } from '../../_resolvers/project-user-list-by-user.resolver';
+import { ProjectUserListByCurrentUserResolver } from '../../_resolvers/project-user-list-by-current-user.resolver';
 import { TimeEntryListByUserResolver } from '../../_resolvers/time-entry-list-by-user.resolver';
 import { TimeEntriesComponent } from './time-entries.component';
 import { TimeEntriesRoutingModule } from './time-entry-list/time-entries-routing.module';
@@ -31,7 +31,7 @@ import { TimeEntryModalComponent } from './time-entry-modal/time-entry-modal.com
   ],
   providers: [
     ProjectListResolver,
-    ProjectUserListByUserResolver,
+    ProjectUserListByCurrentUserResolver,
     TimeEntryListByUserResolver,
   ],
 })
