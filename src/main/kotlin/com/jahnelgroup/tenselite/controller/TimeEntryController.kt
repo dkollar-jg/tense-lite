@@ -1,5 +1,6 @@
 package com.jahnelgroup.tenselite.controller
 
+import com.jahnelgroup.tenselite.dtos.TimeEntryCriteria
 import com.jahnelgroup.tenselite.dtos.UpdateTimeEntryDto
 import com.jahnelgroup.tenselite.models.TimeEntry
 import com.jahnelgroup.tenselite.service.TimeEntryService
@@ -18,6 +19,13 @@ class TimeEntryController(
     @GetMapping
     fun findAll(): List<TimeEntry> {
         return timeEntryService.findAll()
+    }
+
+    @PostMapping("/search")
+    fun findAllByCriteria(
+        @RequestBody criteria: TimeEntryCriteria
+    ): List<TimeEntry> {
+        return timeEntryService.findAll(criteria)
     }
 
     @GetMapping("/users/{userId}")

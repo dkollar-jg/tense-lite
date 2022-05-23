@@ -1,16 +1,24 @@
 package com.jahnelgroup.tenselite.service
 
+import com.jahnelgroup.tenselite.dtos.TimeEntryCriteria
 import com.jahnelgroup.tenselite.dtos.UpdateTimeEntryDto
 import com.jahnelgroup.tenselite.exceptions.NotFoundException
 import com.jahnelgroup.tenselite.models.ProjectUserId
 import com.jahnelgroup.tenselite.models.TimeEntry
 import com.jahnelgroup.tenselite.repository.TimeEntryRepository
 import com.jahnelgroup.tenselite.validator.TimeEntryValidator
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import java.time.LocalDate
+import java.util.*
+import javax.persistence.criteria.CriteriaBuilder
+import javax.persistence.criteria.CriteriaQuery
+import javax.persistence.criteria.Root
 
 interface TimeEntryService {
     fun findAll(): List<TimeEntry>
+    fun findAll(timeEntryCriteria: TimeEntryCriteria): List<TimeEntry>
     fun findByUserId(userId: Long): List<TimeEntry>
     fun findByProjectId(projectId: Long): List<TimeEntry>
     fun findById(id: Long): TimeEntry
@@ -24,9 +32,19 @@ class TimeEntryServiceImpl(
     val projectUserService: ProjectUserService,
     val timeEntryRepository: TimeEntryRepository,
     val timeEntryValidator: TimeEntryValidator
-): TimeEntryService {
+) : TimeEntryService {
     override fun findAll(): List<TimeEntry> {
         return timeEntryRepository.findAll()
+    }
+
+    override fun findAll(timeEntryCriteria: TimeEntryCriteria): List<TimeEntry> {
+        return timeEntryRepository.findAll(
+            Specification.where(hasUserId(timeEntryCriteria.userId))
+                .and(hasProjectId(timeEntryCriteria.projectId))
+                .and(entryDateAfter(timeEntryCriteria.startDate))
+                .and(entryDateBefore(timeEntryCriteria.endDate))
+                .and(entryNotesContains(timeEntryCriteria.entryNotes))
+        )
     }
 
     override fun findByUserId(userId: Long): List<TimeEntry> {
@@ -50,7 +68,8 @@ class TimeEntryServiceImpl(
     }
 
     override fun update(timeEntry: UpdateTimeEntryDto, id: Long): TimeEntry {
-        val originalTimeEntry = timeEntryRepository.findByIdOrNull(id) ?: throw NotFoundException("TimeEntry with id $id does not exist.")
+        val originalTimeEntry =
+            timeEntryRepository.findByIdOrNull(id) ?: throw NotFoundException("TimeEntry with id $id does not exist.")
 
         timeEntry.projectId?.also { originalTimeEntry.projectId = it }
         timeEntry.entryDate?.also { originalTimeEntry.entryDate = it }
@@ -63,8 +82,59 @@ class TimeEntryServiceImpl(
     }
 
     override fun delete(id: Long) {
-        val timeEntry = timeEntryRepository.findByIdOrNull(id) ?: throw NotFoundException("TimeEntry with id $id does not exist")
+        val timeEntry =
+            timeEntryRepository.findByIdOrNull(id) ?: throw NotFoundException("TimeEntry with id $id does not exist")
         timeEntryValidator.validate(timeEntry)
         timeEntryRepository.deleteById(id)
+    }
+
+    fun hasUserId(userId: Long?): Specification<TimeEntry?>? {
+        if (userId == null) return null
+        return Specification { timeEntry: Root<TimeEntry?>, _: CriteriaQuery<*>?, cb: CriteriaBuilder ->
+            cb.equal(
+                timeEntry.get<Long>("userId"),
+                userId
+            )
+        }
+    }
+
+    fun hasProjectId(projectId: Long?): Specification<TimeEntry?>? {
+        if (projectId == null) return null
+        return Specification { timeEntry: Root<TimeEntry?>, _: CriteriaQuery<*>?, cb: CriteriaBuilder ->
+            cb.equal(
+                timeEntry.get<Long>("projectId"),
+                projectId
+            )
+        }
+    }
+
+    fun entryDateAfter(startDate: LocalDate?): Specification<TimeEntry?>? {
+        if (startDate == null) return null
+        return Specification { timeEntry: Root<TimeEntry?>, _: CriteriaQuery<*>?, cb: CriteriaBuilder ->
+            cb.greaterThan(
+                timeEntry.get("entryDate"),
+                startDate
+            )
+        }
+    }
+
+    fun entryDateBefore(endDate: LocalDate?): Specification<TimeEntry?>? {
+        if (endDate == null) return null
+        return Specification { timeEntry: Root<TimeEntry?>, _: CriteriaQuery<*>?, cb: CriteriaBuilder ->
+            cb.lessThan(
+                timeEntry.get("entryDate"),
+                endDate
+            )
+        }
+    }
+
+    fun entryNotesContains(entryNotes: String?): Specification<TimeEntry?>? {
+        if (entryNotes == null) return null
+        return Specification { timeEntry: Root<TimeEntry?>, _: CriteriaQuery<*>?, cb: CriteriaBuilder ->
+            cb.like(
+                timeEntry.get("entryNotes"),
+                "%${entryNotes.lowercase(Locale.getDefault())}%"
+            )
+        }
     }
 }

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { TimeEntryCriteria } from '../_models/time-entry-criteria.model';
 import { TimeEntry } from '../_models/time-entry.model';
 
 @Injectable({
@@ -12,9 +13,11 @@ export class timeEntriesService {
 
   timeEntryChanged = new Subject<TimeEntry>();
   timeEntriesChanged = new Subject<TimeEntry[]>();
+  timeEntryCriteriaChanged = new Subject<TimeEntryCriteria>();
 
   private timeEntry: TimeEntry;
   private timeEntries: TimeEntry[] = [];
+  private timeEntryCriteria: TimeEntryCriteria = {} as TimeEntryCriteria;
 
   constructor(private http: HttpClient) {}
 
@@ -36,12 +39,33 @@ export class timeEntriesService {
     this.timeEntriesChanged.next(this.timeEntries.slice());
   }
 
+  getTimeEntryCriteria() {
+    return this.timeEntryCriteria;
+  }
+
+  setTimeEntryCriteria(criteria: TimeEntryCriteria) {
+    localStorage.setItem('timeEntryCriteria', JSON.stringify(criteria));
+    this.timeEntryCriteria = criteria;
+    this.timeEntryCriteriaChanged.next(this.timeEntryCriteria);
+  }
+
   fetchTimeEntries(): Observable<TimeEntry[]> {
     return this.http.get<TimeEntry[]>(`${this.baseUrl}/time-entries`).pipe(
       tap((timeEntries) => {
         this.setTimeEntries(timeEntries);
       })
     );
+  }
+
+  searchTimeEntries(criteria: TimeEntryCriteria): Observable<TimeEntry[]> {
+    return this.http
+      .post<TimeEntry[]>(`${this.baseUrl}/time-entries/search`, criteria)
+      .pipe(
+        tap((timeEntries) => {
+          this.setTimeEntryCriteria(criteria);
+          this.setTimeEntries(timeEntries);
+        })
+      );
   }
 
   fetchTimeEntriesByUserId(userId: number): Observable<TimeEntry[]> {

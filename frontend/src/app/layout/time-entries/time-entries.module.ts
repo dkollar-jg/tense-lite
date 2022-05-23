@@ -12,12 +12,14 @@ import { TimeEntriesComponent } from './time-entries.component';
 import { TimeEntriesRoutingModule } from './time-entry-list/time-entries-routing.module';
 import { TimeEntryListComponent } from './time-entry-list/time-entry-list.component';
 import { TimeEntryModalComponent } from './time-entry-modal/time-entry-modal.component';
+import { TimeEntryFilterModalComponent } from './time-entry-filter-modal/time-entry-filter-modal.component';
 
 @NgModule({
   declarations: [
     TimeEntriesComponent,
     TimeEntryListComponent,
     TimeEntryModalComponent,
+    TimeEntryFilterModalComponent,
   ],
   imports: [
     BsDatepickerModule.forRoot(),
