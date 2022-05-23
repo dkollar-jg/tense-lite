@@ -1,14 +1,22 @@
 <section>
-  <button class="btn btn-primary" (click)="openProjectModal()" *appIsAdmin>
-    Edit Project
-  </button>
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="d-flex justify-content-between">
+        <h5 class="card-title">{{ project.name }}</h5>
+        <button
+          class="btn btn-primary"
+          (click)="openProjectModal()"
+          *appIsAdmin
+        >
+          Edit Project
+        </button>
+      </div>
 
-  <div>
-    {{ project.name }}
+      <div>Billable: {{ project.isBillable ? "Yes" : "No" }}</div>
+      <div>Start Date: {{ project.startDate | date }}</div>
+      <div>End Date: {{ project.endDate | date }}</div>
+    </div>
   </div>
-  <div>Billable: {{ project.isBillable ? "Yes" : "No" }}</div>
-  <div>Start Date: {{ project.startDate | date }}</div>
-  <div>End Date: {{ project.endDate | date }}</div>
 
   <app-project-user-list
     [project]="project"

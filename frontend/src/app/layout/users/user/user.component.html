@@ -1,13 +1,18 @@
 <section>
-  <button class="btn btn-primary" (click)="openUserModal()" *appIsAdminØ>
-    Edit User
-  </button>
-
-  <div>{{ user.firstName }} {{ user.lastName }}</div>
-  <div>
-    {{ user.email }}
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="d-flex justify-content">
+        <h5>{{ user.firstName }} {{ user.lastName }}</h5>
+        <button class="btn btn-primary" (click)="openUserModal()" *appIsAdminØ>
+          Edit User
+        </button>
+      </div>
+      <div>
+        {{ user.email }}
+      </div>
+      <div>Role: {{ user.isAdmin ? "Admin" : "Basic" }}</div>
+    </div>
   </div>
-  <div>Role: {{ user.isAdmin ? "Admin" : "Basic" }}</div>
 
   <app-user-project-list
     [projects]="projects"

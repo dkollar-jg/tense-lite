@@ -1,35 +1,45 @@
 <section>
-  <button class="btn btn-primary" (click)="openProjectModal()" *appIsAdmin>
-    + New Project
-  </button>
-
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Name</th>
-        <th scope="col">Billable</th>
-        <th scope="col">Start Date</th>
-        <th scope="col">End Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        *ngFor="let project of projects; index as i"
-        [routerLink]="['/projects', project.id]"
-        class="clickable"
-      >
-        <th scope="row">{{ project.id }}</th>
-        <td>{{ project.name }}</td>
-        <td>
-          <i
-            *ngIf="project.isBillable"
-            class="bi bi-cash-coin text-success"
-          ></i>
-        </td>
-        <td>{{ project.startDate | date }}</td>
-        <td>{{ project.endDate | date }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex justify-content-between">
+        <h5 class="card-title">PROJECTS</h5>
+        <button
+          class="btn btn-primary"
+          (click)="openProjectModal()"
+          *appIsAdmin
+        >
+          + New Project
+        </button>
+      </div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Billable</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let project of projects; index as i"
+            [routerLink]="['/projects', project.id]"
+            class="clickable"
+          >
+            <th scope="row">{{ project.id }}</th>
+            <td>{{ project.name }}</td>
+            <td>
+              <i
+                *ngIf="project.isBillable"
+                class="bi bi-cloud-rain-heavy-fill"
+              ></i>
+            </td>
+            <td>{{ project.startDate | date }}</td>
+            <td>{{ project.endDate | date }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </section>
