@@ -16,7 +16,13 @@ export class TimeEntryListByUserResolver
 
   resolve(): Observable<TimeEntry[] | null> {
     const userId = this.authService.getCurrentUser()?.id || 0;
-    return this.timeEntriesService.fetchTimeEntriesByUserId(+userId).pipe(
+    const criteria = JSON.parse(
+      localStorage.getItem('timeEntryCriteria') || '{}'
+    );
+    if (!criteria.userId) {
+      criteria.userId = userId;
+    }
+    return this.timeEntriesService.searchTimeEntries(criteria).pipe(
       catchError((error) => {
         console.log(error);
         return of(null);
