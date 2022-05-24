@@ -22,15 +22,15 @@ import javax.validation.constraints.Size
 class TimeEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = 0L
+    var id: Long = 0L
 
     @field:NotNull(message = "'userId' is required")
     @Column(name = "user_id")
-    var userId: Long? = null
+    var userId: Long = 0L
 
     @field:NotNull(message = "'projectId' is required")
     @Column(name = "project_id")
-    var projectId: Long? = null
+    var projectId: Long = 0L
 
     @field:NotNull(message = "'entryDate' is required")
     @Column(name = "entry_date")
@@ -43,13 +43,19 @@ class TimeEntry {
 
     @field:NotNull(message = "'hours' is required")
     @Column(name = "hours")
-    var hours: Double? = null
+    var hours: Double = 0.0
 
     @Column(name = "hourly_rate")
-    var hourlyRate: Double? = null
+    var hourlyRate: Double = 0.0
 
     @Column(name = "entry_dollar_value")
-    var entryDollarValue: Double? = null
+    var entryDollarValue: Double? = 0.0
+
+    @Column(name = "is_billable")
+    var isBillable: Boolean = false
+
+    @Column(name = "enabled")
+    var enabled: Boolean = true
 
     @CreatedBy
     @Column(name = "created_by_user_id")

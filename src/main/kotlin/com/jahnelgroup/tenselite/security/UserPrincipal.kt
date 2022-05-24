@@ -9,7 +9,8 @@ data class UserPrincipal(
     var lastName: String,
     var email: String,
     private var password: String,
-    var isAdmin: Boolean
+    var isAdmin: Boolean,
+    var enabled: Boolean
 ): UserDetails {
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {

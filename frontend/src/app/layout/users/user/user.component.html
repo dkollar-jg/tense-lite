@@ -1,9 +1,9 @@
 <section>
   <div class="card mb-4">
     <div class="card-body">
-      <div class="d-flex justify-content">
+      <div class="d-flex justify-content-between">
         <h5>{{ user.firstName }} {{ user.lastName }}</h5>
-        <button class="btn btn-primary" (click)="openUserModal()" *appIsAdminØ>
+        <button class="btn btn-primary" (click)="openUserModal()" *appIsAdmin>
           Edit User
         </button>
       </div>
@@ -11,6 +11,7 @@
         {{ user.email }}
       </div>
       <div>Role: {{ user.isAdmin ? "Admin" : "Basic" }}</div>
+      <div>Enabled: {{ user.enabled ? "Yes" : "No" }}</div>
     </div>
   </div>
 

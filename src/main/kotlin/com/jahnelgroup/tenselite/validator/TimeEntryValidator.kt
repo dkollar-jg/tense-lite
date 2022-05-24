@@ -22,9 +22,9 @@ class TimeEntryValidator(
             throw RuntimeException("User does not have permission to perform this action")
         }
 
-        val projectUser = timeEntry.projectId?.let { this.projectUserService.findById(ProjectUserId(timeEntry.projectId, timeEntry.userId)) }
+        val projectUser = this.projectUserService.findById(ProjectUserId(timeEntry.projectId, timeEntry.userId))
         // Throw error when User is not assigned to Project
-        if (projectUser == null || !projectUser.enabled!!) {
+        if (!projectUser.enabled) {
             throw RuntimeException("User is not currently assigned to the Project")
         }
     }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../_services/auth.service';
 
@@ -7,7 +7,7 @@ import { AuthService } from '../../_services/auth.service';
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
 })
-export class NavigationComponent implements OnInit {
+export class NavigationComponent implements OnInit, OnDestroy {
   authenticated = false;
   subscription: Subscription;
 
@@ -24,5 +24,9 @@ export class NavigationComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  ngOnDestroy(): void {
+      this.subscription.unsubscribe();
   }
 }

@@ -32,9 +32,11 @@ class ProjectUser {
     @JsonUnwrapped
     lateinit var projectUserId: ProjectUserId
 
+    @field:NotNull(message = "'hourlyRate' is required")
     @Column(name = "hourly_rate")
-    var hourlyRate: Double? = null
+    var hourlyRate: Double = 0.0
 
+    @field:NotNull(message = "'startDate' is required")
     @Column(name = "start_date")
     var startDate: LocalDate? = null
 
@@ -42,7 +44,7 @@ class ProjectUser {
     var endDate: LocalDate? = null
 
     @Column(name = "enabled")
-    var enabled: Boolean? = true
+    var enabled: Boolean = true
 
     @CreatedBy
     @Column(name = "created_by_user_id")

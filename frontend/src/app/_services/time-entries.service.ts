@@ -22,7 +22,7 @@ export class timeEntriesService {
   constructor(private http: HttpClient) {}
 
   getTimeEntry() {
-    return this.timeEntry;
+    return { ...this.timeEntry };
   }
 
   setTimeEntry(timeEntry: TimeEntry) {

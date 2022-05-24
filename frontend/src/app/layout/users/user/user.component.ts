@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { ProjectUser } from '../../../_models/project-user.model';
 import { Project } from '../../../_models/project.model';
 import { User } from '../../../_models/user.model';
+import { ProjectUsersService } from '../../../_services/project-users.service';
 import { UsersService } from '../../../_services/users.service';
 import { UserModalComponent } from '../user-modal/user-modal.component';
 
@@ -15,13 +16,15 @@ import { UserModalComponent } from '../user-modal/user-modal.component';
 })
 export class UserComponent implements OnInit, OnDestroy {
   bsModalRef: BsModalRef;
-  subscription: Subscription;
   projects: Project[];
   projectUsers: ProjectUser[];
+  projectUsersSubscription: Subscription;
+  subscription: Subscription;
   user: User;
 
   constructor(
     private modalService: BsModalService,
+    private projectUsersService: ProjectUsersService,
     private route: ActivatedRoute,
     private usersService: UsersService
   ) {}
@@ -38,12 +41,19 @@ export class UserComponent implements OnInit, OnDestroy {
         this.user = user;
       }
     );
+    this.projectUsersSubscription =
+      this.projectUsersService.projectUsersChanged.subscribe(
+        (projectUsers: ProjectUser[]) => {
+          console.log('project users changed');
+          this.projectUsers = projectUsers;
+        }
+      );
   }
 
   openUserModal() {
     const modalOptions: ModalOptions = {
       initialState: {
-        user: this.user,
+        user: { ...this.user },
       },
     };
     this.bsModalRef = this.modalService.show(UserModalComponent, modalOptions);
@@ -53,6 +63,7 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.projectUsersSubscription.unsubscribe();
     this.subscription.unsubscribe();
   }
 }

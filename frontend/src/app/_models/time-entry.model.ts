@@ -7,4 +7,5 @@ export interface TimeEntry {
   hours: number;
   hourlyRate: number;
   entryDollarValue: number;
+  enabled: boolean;
 }

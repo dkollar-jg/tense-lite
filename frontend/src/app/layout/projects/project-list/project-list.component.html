@@ -19,6 +19,7 @@
             <th scope="col">Billable</th>
             <th scope="col">Start Date</th>
             <th scope="col">End Date</th>
+            <th scope="col">Enabled</th>
           </tr>
         </thead>
         <tbody>
@@ -37,6 +38,12 @@
             </td>
             <td>{{ project.startDate | date }}</td>
             <td>{{ project.endDate | date }}</td>
+            <td>
+              <i
+                *ngIf="project.enabled"
+                class="bi bi-wind"
+              ></i>
+            </td>
           </tr>
         </tbody>
       </table>

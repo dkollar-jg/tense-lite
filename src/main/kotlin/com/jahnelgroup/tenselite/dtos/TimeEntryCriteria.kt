@@ -8,4 +8,5 @@ class TimeEntryCriteria {
     var startDate: LocalDate? = null
     var endDate: LocalDate? = null
     var entryNotes: String? = null
+    var enabled: Boolean? = null
 }
