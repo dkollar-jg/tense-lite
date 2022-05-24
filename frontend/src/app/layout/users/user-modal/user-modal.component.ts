@@ -49,6 +49,7 @@ export class UserModalComponent implements OnInit {
         ],
       ],
       isAdmin: this.user.isAdmin,
+      enabled: this.user.enabled,
     });
   }
 
@@ -62,6 +63,7 @@ export class UserModalComponent implements OnInit {
       lastName: this.userForm.value.lastName.trim(),
       email: this.userForm.value.email.trim(),
       isAdmin: this.userForm.value.isAdmin,
+      enabled: this.userForm.value.enabled,
     };
     Object.assign(this.user, userFormValue);
     this.userEvent.emit(this.user);

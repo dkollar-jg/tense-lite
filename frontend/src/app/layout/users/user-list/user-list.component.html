@@ -14,6 +14,7 @@
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Admin</th>
+            <th scope="col">Enabled</th>
           </tr>
         </thead>
         <tbody>
@@ -29,6 +30,12 @@
               <i
                 *ngIf="user.isAdmin"
                 class="bi bi-lightning-charge-fill"
+              ></i>
+            </td>
+            <td>
+              <i
+                *ngIf="user.enabled"
+                class="bi bi-wind"
               ></i>
             </td>
           </tr>

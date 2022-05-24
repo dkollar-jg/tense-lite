@@ -21,6 +21,7 @@ export class TimeEntryListByUserResolver
     );
     if (!criteria.userId) {
       criteria.userId = userId;
+      criteria.enabled = true;
     }
     return this.timeEntriesService.searchTimeEntries(criteria).pipe(
       catchError((error) => {

@@ -11,7 +11,7 @@ class CreateProjectUserDto(
     var userId: Long?,
 
     @field:NotNull(message = "'hourlyRate' is required")
-    var hourlyRate: Double?,
+    var hourlyRate: Double = 0.0,
 
     @field:NotNull(message = "'startDate' is required")
     var startDate: LocalDate?,

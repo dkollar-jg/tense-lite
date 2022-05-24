@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let projectUser of projectUsers; index as i">
+        <tr *ngFor="let projectUser of projectUsers; index as i" [routerLink]="['/projects', projectUser.projectId]" class="clickable">
           <th scope="row">
             {{ projectUser.projectId | projectName: projects }}
           </th>

@@ -59,7 +59,7 @@ export class TimeEntryListComponent implements OnInit, OnDestroy {
     const availableProjectIds = this.projectUsers.map((pu) => pu.projectId);
     this.availableProjects = this.projects
       .slice()
-      .filter((p) => availableProjectIds.includes(p.id));
+      .filter((p) => p.enabled && availableProjectIds.includes(p.id));
   }
 
   openTimeEntryCreateModal() {
@@ -105,7 +105,8 @@ export class TimeEntryListComponent implements OnInit, OnDestroy {
   }
 
   deleteTimeEntry(timeEntry: TimeEntry) {
-    this.timeEntryService.deleteTimeEntry(timeEntry.id);
+    timeEntry.enabled = false;
+    this.timeEntryService.updateTimeEntry(timeEntry);
   }
 
   openTimeEntryFilter() {
@@ -123,8 +124,8 @@ export class TimeEntryListComponent implements OnInit, OnDestroy {
       (criteria: TimeEntryCriteria) => {
         if (!criteria.userId) {
           criteria.userId = this.authService.getCurrentUser()?.id || 0;
+          criteria.enabled = true;
         }
-        console.log('before search');
         this.timeEntryService.searchTimeEntries(criteria).subscribe();
       }
     );

@@ -16,6 +16,10 @@ export class ProjectUsersService {
 
   constructor(private http: HttpClient) {}
 
+  getProjectUsers() {
+    return this.projectUsers.slice();
+  }
+
   setProjectUsers(projectUsers: ProjectUser[]) {
     this.projectUsers = projectUsers;
   }
@@ -68,7 +72,9 @@ export class ProjectUsersService {
       .subscribe((projectUser) => {
         const currentProjectId = this.projectUsers[0]?.projectId;
         if (currentProjectId === projectUser.projectId) {
-          const index = this.projectUsers.findIndex((pu) => pu.userId === projectUser.userId);
+          const index = this.projectUsers.findIndex(
+            (pu) => pu.userId === projectUser.userId
+          );
           this.projectUsers[index] = projectUser;
           this.projectUsersChanged.next(this.projectUsers.slice());
         }

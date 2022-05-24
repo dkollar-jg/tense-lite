@@ -15,4 +15,6 @@ class UpdateUserDto {
     var email: String? = null
 
     var isAdmin: Boolean? = null
+
+    var enabled: Boolean? = null
 }

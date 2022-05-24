@@ -11,5 +11,7 @@ data class UpdateProjectDto(
 
     var startDate: LocalDate?,
 
-    var endDate: LocalDate?
+    var endDate: LocalDate?,
+
+    var enabled: Boolean?,
 )

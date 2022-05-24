@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Project } from '../_models/project.model';
+import { ProjectUsersService } from './project-users.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,10 +17,13 @@ export class ProjectsService {
   private project: Project;
   private projects: Project[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private projectUsersService: ProjectUsersService
+  ) {}
 
   getProject() {
-    return this.project;
+    return { ...this.project };
   }
 
   setProject(project: Project) {
@@ -61,8 +65,14 @@ export class ProjectsService {
 
   updateProject(updateProject: Project) {
     this.http
-      .post<Project>(`${this.baseUrl}/projects`, updateProject)
+      .patch<Project>(`${this.baseUrl}/projects/${updateProject.id}`, updateProject)
       .subscribe((project) => {
+        // Refresh project users if project is deactivated
+        if (this.project.enabled && project.enabled === false) {
+          this.projectUsersService
+            .fetchProjectUsersByProject(project.id)
+            .subscribe();
+        }
         this.setProject(project);
         const index = this.projects.findIndex((p) => p.id === project.id);
         this.projects[index] = project;

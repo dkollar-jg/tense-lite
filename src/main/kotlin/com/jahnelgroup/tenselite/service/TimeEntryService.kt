@@ -29,6 +29,7 @@ interface TimeEntryService {
 
 @Service
 class TimeEntryServiceImpl(
+    val projectService: ProjectService,
     val projectUserService: ProjectUserService,
     val timeEntryRepository: TimeEntryRepository,
     val timeEntryValidator: TimeEntryValidator
@@ -44,6 +45,7 @@ class TimeEntryServiceImpl(
                 .and(entryDateAfter(timeEntryCriteria.startDate))
                 .and(entryDateBefore(timeEntryCriteria.endDate))
                 .and(entryNotesContains(timeEntryCriteria.entryNotes))
+                .and(hasEnabled(timeEntryCriteria.enabled))
         )
     }
 
@@ -61,9 +63,11 @@ class TimeEntryServiceImpl(
 
     override fun create(timeEntry: TimeEntry): TimeEntry {
         timeEntryValidator.validate(timeEntry)
+        val project = projectService.findById(timeEntry.projectId)
+        timeEntry.isBillable = project.isBillable
         val projectUser = projectUserService.findById(ProjectUserId(timeEntry.projectId, timeEntry.userId))
         timeEntry.hourlyRate = projectUser.hourlyRate
-        timeEntry.entryDollarValue = timeEntry.hourlyRate?.let { timeEntry.hours?.times(it) }
+        timeEntry.entryDollarValue = timeEntry.hourlyRate
         return timeEntryRepository.save(timeEntry)
     }
 
@@ -75,7 +79,8 @@ class TimeEntryServiceImpl(
         timeEntry.entryDate?.also { originalTimeEntry.entryDate = it }
         timeEntry.entryNotes?.also { originalTimeEntry.entryNotes = it }
         timeEntry.hours?.also { originalTimeEntry.hours = it }
-        originalTimeEntry.entryDollarValue = originalTimeEntry.hourlyRate?.let { originalTimeEntry.hours?.times(it) }
+        originalTimeEntry.entryDollarValue = originalTimeEntry.hourlyRate.times(originalTimeEntry.hours)
+        timeEntry.enabled?.also { originalTimeEntry.enabled = it }
 
         timeEntryValidator.validate(originalTimeEntry)
         return timeEntryRepository.save(originalTimeEntry)
@@ -134,6 +139,16 @@ class TimeEntryServiceImpl(
             cb.like(
                 timeEntry.get("entryNotes"),
                 "%${entryNotes.lowercase(Locale.getDefault())}%"
+            )
+        }
+    }
+
+    fun hasEnabled(enabled: Boolean?): Specification<TimeEntry?>? {
+        if (enabled == null) return null
+        return Specification { timeEntry: Root<TimeEntry?>, _: CriteriaQuery<*>?, cb: CriteriaBuilder ->
+            cb.equal(
+                timeEntry.get<Boolean>("enabled"),
+                enabled
             )
         }
     }

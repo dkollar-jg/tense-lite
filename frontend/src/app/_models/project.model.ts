@@ -4,4 +4,5 @@ export interface Project {
   isBillable: boolean;
   startDate: string;
   endDate: string;
+  enabled: boolean;
 }

@@ -21,7 +21,7 @@ export class ProjectUserListComponent implements OnInit {
 
   constructor(
     private modalService: BsModalService,
-    private projectUsersService: ProjectUsersService,
+    private projectUsersService: ProjectUsersService
   ) {}
 
   ngOnInit(): void {}
@@ -41,7 +41,7 @@ export class ProjectUserListComponent implements OnInit {
         projectUser: newProjectUser,
         projectUsers: this.projectUsers,
         source: 'project',
-        users: this.users
+        users: this.users.filter((u) => u.enabled),
       },
     };
     this.bsModalRef = this.modalService.show(
@@ -63,7 +63,7 @@ export class ProjectUserListComponent implements OnInit {
         projectUser: projectUser,
         projectUsers: this.projectUsers,
         source: 'project-user',
-        users: this.users
+        users: this.users,
       },
     };
     this.bsModalRef = this.modalService.show(

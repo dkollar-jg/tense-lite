@@ -4,4 +4,5 @@ export interface TimeEntryCriteria {
   startDate: string;
   endDate: string;
   entryNotes: string;
+  enabled: boolean;
 }

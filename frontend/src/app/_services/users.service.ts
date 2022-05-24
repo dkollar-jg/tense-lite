@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { User } from '../_models/user.model';
+import { ProjectUsersService } from './project-users.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,10 +17,13 @@ export class UsersService {
   private user: User;
   private users: User[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private projectUsersService: ProjectUsersService
+  ) {}
 
   getUser() {
-    return this.user;
+    return { ...this.user };
   }
 
   setUser(user: User) {
@@ -61,6 +65,10 @@ export class UsersService {
     this.http
       .patch<User>(`${this.baseUrl}/users/${updateUser.id}`, updateUser)
       .subscribe((user) => {
+        // Refresh project users if user is deactivated
+        if (this.user.enabled && user.enabled === false) {
+          this.projectUsersService.fetchProjectUsersByUser(user.id).subscribe();
+        }
         this.setUser(user);
         const index = this.users.findIndex((u) => u.id === user.id);
         this.users[index] = user;

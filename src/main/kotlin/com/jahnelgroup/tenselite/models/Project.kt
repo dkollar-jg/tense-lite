@@ -33,9 +33,11 @@ class Project {
     @Column(name = "start_date")
     var startDate: LocalDate? = null
 
-    //    @field:NotNull(message = "'endDate' is required")
     @Column(name = "end_date")
     var endDate: LocalDate? = null
+
+    @Column(name = "enabled")
+    var enabled: Boolean = true
 
     @CreatedBy
     @Column(name = "created_by_user_id")

@@ -21,17 +21,17 @@ class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L
 
-//    @field:Size(min = 2, max = 120, message = "'firstName' must be between 2 and 120 characters.")
+    @field:Size(min = 1, max = 120, message = "'firstName' must be between 1 and 120 characters.")
     @Column(name = "first_name")
     var firstName = ""
 
-//    @field:Size(min = 2, max = 120, message = "'lastName' must be between 2 and 120 characters.")
+    @field:Size(min = 1, max = 120, message = "'lastName' must be between 1 and 120 characters.")
     @Column(name = "last_name")
     var lastName = ""
 
-//    @field:NotBlank(message = "'email' is required")
-//    @field:Size(min = 2, max = 255, message = "'email' must be between 2 and 255 characters.")
-//    @field:Email(message = "'email' is invalid")
+    @field:NotBlank(message = "'email' is required")
+    @field:Size(max = 255, message = "'email' must be between 2 and 255 characters.")
+    @field:Email(message = "'email' is invalid")
     @Column(name = "email", unique = true)
     var email = ""
 
@@ -46,6 +46,9 @@ class User {
 
     @Column(name = "is_admin")
     var isAdmin: Boolean = false
+
+    @Column(name = "enabled")
+    var enabled: Boolean = true
 
     @CreatedBy
     @Column(name = "created_by_user_id")

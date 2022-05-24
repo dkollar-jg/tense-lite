@@ -3,10 +3,12 @@ package com.jahnelgroup.tenselite.service
 import com.jahnelgroup.tenselite.dtos.UpdateUserDto
 import com.jahnelgroup.tenselite.exceptions.NotFoundException
 import com.jahnelgroup.tenselite.models.User
+import com.jahnelgroup.tenselite.repository.ProjectUserRepository
 import com.jahnelgroup.tenselite.repository.UserRepository
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import javax.transaction.Transactional
 
 interface UserService {
     fun findAll(): List<User>
@@ -21,8 +23,9 @@ interface UserService {
 
 @Service
 class UserServiceImpl(
+    val projectUserRepository: ProjectUserRepository,
     val userRepository: UserRepository
-): UserService {
+) : UserService {
     @Value("\${jwt.defaultPassword}")
     private val defaultPassword: String = String()
 
@@ -39,14 +42,24 @@ class UserServiceImpl(
         return userRepository.save(user)
     }
 
+    @Transactional
     override fun update(user: UpdateUserDto, id: Long): User {
-        val originalUser = userRepository.findByIdOrNull(id) ?: throw NotFoundException("User with id $id does not exist.")
+        val originalUser =
+            userRepository.findByIdOrNull(id) ?: throw NotFoundException("User with id $id does not exist.")
+
+        val isDeactivating = user.enabled == false && originalUser.enabled
 
         user.firstName?.also { originalUser.firstName = it }
         user.lastName?.also { originalUser.lastName = it }
-        user.isAdmin?.also {originalUser.isAdmin = it }
+        user.isAdmin?.also { originalUser.isAdmin = it }
+        user.enabled?.also { originalUser.enabled = it }
 
-        return userRepository.save(originalUser)
+        val u = userRepository.save(originalUser)
+        // If User is deactivating then deactivate all associated Project Users
+        if (isDeactivating) {
+            this.projectUserRepository.deactivateByUserId(u.id)
+        }
+        return u
     }
 
     override fun delete(id: Long) {

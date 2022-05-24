@@ -39,6 +39,7 @@ export class ProjectModalComponent implements OnInit {
       isBillable: [this.project.isBillable],
       startDate: [this.helperService.stringToDate(this.project.startDate)],
       endDate: [this.helperService.stringToDate(this.project.endDate)],
+      enabled: [this.project.enabled],
     });
   }
 
@@ -56,6 +57,7 @@ export class ProjectModalComponent implements OnInit {
       endDate: this.projectForm.value.endDate
         ? this.helperService.dateToString(this.projectForm.value.endDate)
         : null,
+      enabled: this.projectForm.value.enabled,
     };
     Object.assign(this.project, projectFormValue);
     this.projectEvent.emit(this.project);

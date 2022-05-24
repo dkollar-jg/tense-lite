@@ -24,15 +24,12 @@
       </thead>
       <tbody>
         <tr *ngFor="let projectUser of projectUsers; index as i">
-          <th scope="row">{{ projectUser.userId | userFullName: users }}</th>
+          <th scope="row" [routerLink]="['/users', projectUser.userId]" class="clickable">{{ projectUser.userId | userFullName: users }}</th>
           <td *appIsAdmin>{{ projectUser.hourlyRate | currency }}</td>
           <td>{{ projectUser.startDate | date }}</td>
           <td>{{ projectUser.endDate | date }}</td>
           <td>
-            <i
-              *ngIf="projectUser.enabled"
-              class="bi bi-wind"
-            ></i>
+            <i *ngIf="projectUser.enabled" class="bi bi-wind"></i>
           </td>
           <td *appIsAdmin>
             <button
