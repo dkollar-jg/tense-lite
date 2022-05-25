@@ -41,6 +41,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       lastName: '',
       email: '',
       isAdmin: false,
+      enabled: true,
     };
     const modalOptions: ModalOptions = {
       initialState: {

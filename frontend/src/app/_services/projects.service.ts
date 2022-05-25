@@ -65,7 +65,10 @@ export class ProjectsService {
 
   updateProject(updateProject: Project) {
     this.http
-      .patch<Project>(`${this.baseUrl}/projects/${updateProject.id}`, updateProject)
+      .patch<Project>(
+        `${this.baseUrl}/projects/${updateProject.id}`,
+        updateProject
+      )
       .subscribe((project) => {
         // Refresh project users if project is deactivated
         if (this.project.enabled && project.enabled === false) {
@@ -85,8 +88,7 @@ export class ProjectsService {
       .delete<Boolean>(`${this.baseUrl}/projects`)
       .subscribe((isDeleted) => {
         if (isDeleted) {
-          const index = this.projects.findIndex((p) => p.id === id);
-          this.projects.splice(index, 1);
+          this.projects = this.projects.filter((p) => p.id !== id);
           this.projectsChanged.next(this.projects.slice());
         }
       });

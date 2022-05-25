@@ -41,6 +41,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       isBillable: false,
       startDate: null,
       endDate: null,
+      enabled: true,
     };
     const modalOptions: ModalOptions = {
       initialState: {

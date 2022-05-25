@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProjectListResolver } from '../../../_resolvers/project-list.resolver';
-import { ProjectUserListByCurrentUserResolver } from '../../../_resolvers/project-user-list-by-current-user.resolver';
-import { TimeEntryListByUserResolver } from '../../../_resolvers/time-entry-list-by-user.resolver';
-import { TimeEntriesComponent } from '../time-entries.component';
-import { TimeEntryListComponent } from './time-entry-list.component';
+import { ProjectListResolver } from '../../_resolvers/project-list.resolver';
+import { ProjectUserListByCurrentUserResolver } from '../../_resolvers/project-user-list-by-current-user.resolver';
+import { TimeEntryListByCurrentUserResolver } from '../../_resolvers/time-entry-list-by-current-user.resolver';
+import { TimeEntriesComponent } from './time-entries.component';
+import { TimeEntryListComponent } from './time-entry-list/time-entry-list.component';
 
 const routes: Routes = [
   {
@@ -21,7 +21,7 @@ const routes: Routes = [
             resolve: {
               projects: ProjectListResolver,
               projectUsers: ProjectUserListByCurrentUserResolver,
-              timeEntries: TimeEntryListByUserResolver,
+              timeEntries: TimeEntryListByCurrentUserResolver,
             },
           },
         ],

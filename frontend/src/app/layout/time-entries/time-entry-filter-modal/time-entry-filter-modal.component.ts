@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Project } from '../../../_models/project.model';
 import { TimeEntryCriteria } from '../../../_models/time-entry-criteria.model';
+import { User } from '../../../_models/user.model';
+import { AuthService } from '../../../_services/auth.service';
 import { HelperService } from '../../../_services/helper.service';
 
 @Component({
@@ -15,9 +17,12 @@ export class TimeEntryFilterModalComponent implements OnInit {
 
   criteria: TimeEntryCriteria;
   projects: Project[];
+  source = 'admin';
   timeEntryFilterForm: FormGroup;
+  users: User[];
 
   constructor(
+    private authService: AuthService,
     public bsModalRef: BsModalRef,
     private fb: FormBuilder,
     private helperService: HelperService
@@ -29,6 +34,12 @@ export class TimeEntryFilterModalComponent implements OnInit {
 
   createTimeEntryFilterForm() {
     this.timeEntryFilterForm = this.fb.group({
+      userId: [
+        {
+          value: this.criteria.userId,
+          disabled: this.source === 'current-user',
+        },
+      ],
       projectId: [this.criteria.projectId],
       startDate: [this.helperService.stringToDate(this.criteria.startDate)],
       endDate: [this.helperService.stringToDate(this.criteria.endDate)],
@@ -44,6 +55,10 @@ export class TimeEntryFilterModalComponent implements OnInit {
 
   submitHandler() {
     const timeEntryFilterFormValue = {
+      userId:
+        this.source === 'current-user'
+          ? this.authService.getCurrentUser()?.id
+          : this.timeEntryFilterForm.value.userId,
       projectId: this.timeEntryFilterForm.value.projectId,
       startDate: this.timeEntryFilterForm.value.startDate
         ? this.helperService.dateToString(

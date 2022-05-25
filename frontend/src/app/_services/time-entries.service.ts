@@ -8,7 +8,7 @@ import { TimeEntry } from '../_models/time-entry.model';
 @Injectable({
   providedIn: 'root',
 })
-export class timeEntriesService {
+export class TimeEntriesService {
   baseUrl = environment.apiUrl;
 
   timeEntryChanged = new Subject<TimeEntry>();
@@ -44,7 +44,6 @@ export class timeEntriesService {
   }
 
   setTimeEntryCriteria(criteria: TimeEntryCriteria) {
-    localStorage.setItem('timeEntryCriteria', JSON.stringify(criteria));
     this.timeEntryCriteria = criteria;
     this.timeEntryCriteriaChanged.next(this.timeEntryCriteria);
   }
@@ -95,7 +94,13 @@ export class timeEntriesService {
         const index = this.timeEntries.findIndex(
           (te) => te.id === timeEntry.id
         );
-        this.timeEntries[index] = timeEntry;
+        if (timeEntry.enabled) {
+          this.timeEntries[index] = timeEntry;
+        } else {
+          this.timeEntries = this.timeEntries.filter(
+            (te) => te.id !== timeEntry.id
+          );
+        }
         this.timeEntriesChanged.next(this.timeEntries.slice());
       });
   }
@@ -105,8 +110,7 @@ export class timeEntriesService {
       .delete<Boolean>(`${this.baseUrl}/time-entries/${id}`)
       .subscribe((isDeleted) => {
         if (isDeleted) {
-          const index = this.timeEntries.findIndex((te) => te.id === id);
-          this.timeEntries.splice(index, 1);
+          this.timeEntries.filter((te) => te.id !== id);
           this.timeEntriesChanged.next(this.timeEntries.slice());
         }
       });

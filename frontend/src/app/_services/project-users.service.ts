@@ -54,11 +54,8 @@ export class ProjectUsersService {
         createProjectUser
       )
       .subscribe((projectUser) => {
-        const currentProjectId = this.projectUsers[0]?.projectId;
-        if (currentProjectId === projectUser.projectId) {
-          this.projectUsers.push(projectUser);
-          this.projectUsersChanged.next(this.projectUsers.slice());
-        }
+        this.projectUsers.push(projectUser);
+        this.projectUsersChanged.next(this.projectUsers.slice());
       });
   }
 
@@ -70,14 +67,11 @@ export class ProjectUsersService {
         updateProjectUser
       )
       .subscribe((projectUser) => {
-        const currentProjectId = this.projectUsers[0]?.projectId;
-        if (currentProjectId === projectUser.projectId) {
-          const index = this.projectUsers.findIndex(
-            (pu) => pu.userId === projectUser.userId
-          );
-          this.projectUsers[index] = projectUser;
-          this.projectUsersChanged.next(this.projectUsers.slice());
-        }
+        const index = this.projectUsers.findIndex(
+          (pu) => pu.userId === projectUser.userId
+        );
+        this.projectUsers[index] = projectUser;
+        this.projectUsersChanged.next(this.projectUsers.slice());
       });
   }
 }

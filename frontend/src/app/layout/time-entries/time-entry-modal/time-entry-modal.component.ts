@@ -14,7 +14,9 @@ export class TimeEntryModalComponent implements OnInit {
   @Output() timeEntryEvent = new EventEmitter();
 
   availableProjects: Project[];
+  mode = 'create';
   projects: Project[];
+  source = 'admin';
   submitted = false;
   timeEntry: TimeEntry;
   timeEntryForm: FormGroup;
@@ -26,12 +28,18 @@ export class TimeEntryModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    if (this.source === 'admin') {
+      this.availableProjects = this.projects;
+    }
     this.createTimeEntryForm();
   }
 
   createTimeEntryForm() {
     this.timeEntryForm = this.fb.group({
-      projectId: [this.timeEntry.projectId, [Validators.required]],
+      projectId: [
+        { value: this.timeEntry.projectId, disabled: this.source === 'admin' },
+        [Validators.required],
+      ],
       entryDate: [
         this.helperService.stringToDate(this.timeEntry.entryDate),
         [Validators.required],

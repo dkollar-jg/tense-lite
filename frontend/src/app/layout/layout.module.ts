@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DirectivesModule } from '../_directives/directives.module';
 import { LayoutRoutingModule } from './layout-routing.module';
 import { LayoutComponent } from './layout.component';
 import { LoginComponent } from './login/login.component';
@@ -16,6 +17,7 @@ import { RegisterComponent } from './register/register.component';
   ],
   imports: [
     CommonModule,
+    DirectivesModule,
     FormsModule,
     ReactiveFormsModule,
     LayoutRoutingModule,
