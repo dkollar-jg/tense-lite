@@ -81,8 +81,7 @@ export class UsersService {
       .delete<Boolean>(`${this.baseUrl}/users`)
       .subscribe((isDeleted) => {
         if (isDeleted) {
-          const index = this.users.findIndex((u) => u.id === id);
-          this.users.splice(index, 1);
+          this.users = this.users.filter(u => u.id !== id);
           this.usersChanged.next(this.users.slice());
         }
       });

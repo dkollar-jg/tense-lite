@@ -33,6 +33,15 @@
           >Users</a
         >
       </li>
+      <li class="nav-item" *appIsAdmin>
+        <a
+          class="nav-link"
+          href="#"
+          [routerLink]="['/admin']"
+          routerLinkActive="active"
+          >Admin</a
+        >
+      </li>
     </ul>
 
     <section *ngIf="authenticated; else unauthenticated">
