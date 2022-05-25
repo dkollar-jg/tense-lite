@@ -77,6 +77,12 @@
         >
           Required
         </div>
+        <div
+          class="invalid-feedback"
+          *ngIf="submitted && projectUserForm.get('hourlyRate')?.hasError('min')"
+        >
+          Must be greater than 0 for billable Project
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="startDate">Start Date</label>
