@@ -25,20 +25,40 @@ export class ProjectUserModalComponent implements OnInit {
   constructor(
     public bsModalRef: BsModalRef,
     private fb: FormBuilder,
-    private helperService: HelperService,
+    private helperService: HelperService
   ) {}
 
   ngOnInit(): void {
     this.createProjectUserForm();
+    this.setHourlyRateValidator();
   }
 
   createProjectUserForm() {
     this.projectUserForm = this.fb.group({
-      projectId: [{ value: this.projectUser.projectId, disabled: ['project', 'project-user'].includes(this.source) }, [Validators.required]],
-      userId: [{ value: this.projectUser.userId, disabled: ['project-user', 'user'].includes(this.source) }, [Validators.required]],
-      hourlyRate: [this.projectUser.hourlyRate], // TODO: conditionally required if project is billable
+      projectId: [
+        {
+          value: this.projectUser.projectId,
+          disabled: ['project', 'project-user'].includes(this.source),
+        },
+        [Validators.required],
+      ],
+      userId: [
+        {
+          value: this.projectUser.userId,
+          disabled: ['project-user', 'user'].includes(this.source),
+        },
+        [Validators.required],
+      ],
+      hourlyRate: [this.projectUser.hourlyRate],
       startDate: [this.helperService.stringToDate(this.projectUser.startDate)],
       endDate: [this.helperService.stringToDate(this.projectUser.endDate)],
+    });
+  }
+
+  setHourlyRateValidator() {
+    this.updateHourlyRateValidator();
+    this.projectUserForm.valueChanges.subscribe(() => {
+      this.updateHourlyRateValidator();
     });
   }
 
@@ -61,5 +81,18 @@ export class ProjectUserModalComponent implements OnInit {
     Object.assign(this.projectUser, projectUserFormValue);
     this.projectUserEvent.emit(this.projectUser);
     this.bsModalRef.hide();
+  }
+
+  updateHourlyRateValidator() {
+    const hourlyRateControl = this.projectUserForm.controls.hourlyRate;
+    const projectIdControl = this.projectUserForm.controls.projectId;
+    const project = this.projects.find((p) => p.id === projectIdControl.value);
+    if (project && project.isBillable) {
+      hourlyRateControl.setValidators([Validators.required, Validators.min(1)]);
+    } else {
+      hourlyRateControl.setValidators(null);
+      hourlyRateControl.setValue(0);
+      hourlyRateControl.disable();
+    }
   }
 }
