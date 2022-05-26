@@ -17,7 +17,7 @@
       <div class="mb-3" *ngIf="source === 'admin'">
         <label for="userId" class="form-label">User</label>
         <select class="form-control" id="userId" formControlName="userId">
-          <option value=""></option>
+          <option value=null></option>
           <option *ngFor="let user of users" value="{{ user.id }}">
             {{ user.firstName }} {{ user.lastName }}
           </option>
@@ -26,7 +26,7 @@
       <div class="mb-3">
         <label for="userId" class="form-label">Project</label>
         <select class="form-control" id="projectId" formControlName="projectId">
-          <option value=""></option>
+          <option value=null></option>
           <option *ngFor="let project of projects" value="{{ project.id }}">
             {{ project.name }}
           </option>

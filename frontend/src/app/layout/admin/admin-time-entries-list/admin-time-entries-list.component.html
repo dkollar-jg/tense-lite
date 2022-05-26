@@ -12,18 +12,31 @@
           </button>
         </div>
       </div>
-      <table
-        class="table table-striped"
-        *ngIf="timeEntries.length > 0; else noTimeEntries"
-      >
+      <table class="table table-striped">
         <thead>
           <tr>
             <th scope="col">ID</th>
-            <th scope="col">User</th>
-            <th scope="col">Entry Date</th>
-            <th scope="col">Project</th>
+            <th scope="col">
+              User{{ (criteria | isFilteredField: ["userId"]) ? "*" : "" }}
+            </th>
+            <th scope="col">
+              Entry Date{{
+                (criteria | isFilteredField: ["startDate", "endDate"])
+                  ? "*"
+                  : ""
+              }}
+            </th>
+            <th scope="col">
+              Project{{
+                (criteria | isFilteredField: ["projectId"]) ? "*" : ""
+              }}
+            </th>
             <th scope="col">Hours</th>
-            <th scope="col">Entry Notes</th>
+            <th scope="col">
+              Entry Notes{{
+                (criteria | isFilteredField: ["entryNotes"]) ? "*" : ""
+              }}
+            </th>
             <th scope="col"></th>
             <th scope="col"></th>
           </tr>
@@ -57,10 +70,6 @@
           </tr>
         </tbody>
       </table>
-
-      <ng-template #noTimeEntries>
-        <div>No Time Entries match filter</div>
-      </ng-template>
     </div>
   </div>
 </section>
